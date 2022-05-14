@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import dotenv from "dotenv";
 import bodyParser from "body-parser";
 import cors from "cors";
+import client from "./models/database"
 
 dotenv.config();
 
@@ -21,13 +22,19 @@ app.get("/galleryone", async function (req: Request, res: Response) {
 
 const runApp = async ()=> {
     try {
+        const conn = await client.connect();
+        const sql = "SELECT SESSION_USER";
+        const res = await conn.query(sql);
+        conn.release();
+        
         app.listen(PORT, () => {
             console.log(`Server started successfulyy on PORT ${PORT}`);
-        })    
+        });
+        return console.log(res.rows)
     } catch (error) {
         console.log(error)
         runApp();
     }
 };
 
-runApp()
+runApp();

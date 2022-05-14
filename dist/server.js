@@ -42,6 +42,7 @@ exports.__esModule = true;
 var express_1 = __importDefault(require("express"));
 var dotenv_1 = __importDefault(require("dotenv"));
 var body_parser_1 = __importDefault(require("body-parser"));
+var database_1 = __importDefault(require("./models/database"));
 dotenv_1["default"].config();
 var PORT = process.env.PORT;
 var app = (0, express_1["default"])();
@@ -55,17 +56,30 @@ app.get("/galleryone", function (req, res) {
     });
 });
 var runApp = function () { return __awaiter(void 0, void 0, void 0, function () {
+    var conn, sql, res, error_1;
     return __generator(this, function (_a) {
-        try {
-            app.listen(PORT, function () {
-                console.log("Server started successfulyy on PORT ".concat(PORT));
-            });
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 3, , 4]);
+                return [4 /*yield*/, database_1["default"].connect()];
+            case 1:
+                conn = _a.sent();
+                sql = "SELECT SESSION_USER";
+                return [4 /*yield*/, conn.query(sql)];
+            case 2:
+                res = _a.sent();
+                conn.release();
+                app.listen(PORT, function () {
+                    console.log("Server started successfulyy on PORT ".concat(PORT));
+                });
+                return [2 /*return*/, console.log(res.rows)];
+            case 3:
+                error_1 = _a.sent();
+                console.log(error_1);
+                runApp();
+                return [3 /*break*/, 4];
+            case 4: return [2 /*return*/];
         }
-        catch (error) {
-            console.log(error);
-            runApp();
-        }
-        return [2 /*return*/];
     });
 }); };
 runApp();
