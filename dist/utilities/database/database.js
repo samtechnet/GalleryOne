@@ -39,35 +39,45 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 exports.__esModule = true;
-var express_1 = __importDefault(require("express"));
+exports.dbConnection = exports.client = void 0;
 var dotenv_1 = __importDefault(require("dotenv"));
-var body_parser_1 = __importDefault(require("body-parser"));
-var database_1 = require("./utilities/database/database");
+var pg_1 = require("pg");
 dotenv_1["default"].config();
-var PORT = process.env.PORT;
-var app = (0, express_1["default"])();
-app.use(body_parser_1["default"].json());
-app.get("/galleryone", function (req, res) {
-    return __awaiter(this, void 0, void 0, function () {
-        return __generator(this, function (_a) {
-            res.send("This is server");
-            return [2 /*return*/];
-        });
+var _a = process.env, POSTGRES_HOST = _a.POSTGRES_HOST, POSTGRES_DB = _a.POSTGRES_DB, POSTGRES_DB_TEST = _a.POSTGRES_DB_TEST, POSTGRES_USER = _a.POSTGRES_USER, POSTGRES_PASSWORD = _a.POSTGRES_PASSWORD, ENV = _a.ENV;
+var client;
+exports.client = client;
+console.log("ENV", ENV);
+if (ENV === "test") {
+    console.log("I am in test mode");
+    exports.client = client = new pg_1.Pool({
+        host: POSTGRES_HOST,
+        database: POSTGRES_DB_TEST,
+        user: POSTGRES_USER,
+        password: POSTGRES_PASSWORD
     });
-});
-var runApp = function () { return __awaiter(void 0, void 0, void 0, function () {
+}
+else {
+    //console.log("I am in dev mode");
+    exports.client = client = new pg_1.Pool({
+        host: POSTGRES_HOST,
+        database: POSTGRES_DB,
+        user: POSTGRES_USER,
+        password: POSTGRES_PASSWORD
+    });
+}
+var dbConnection = function (sql) { return __awaiter(void 0, void 0, void 0, function () {
+    var conn, res;
     return __generator(this, function (_a) {
-        try {
-            (0, database_1.dbConnection)('SELECT SESSION_USER');
-            app.listen(PORT, function () {
-                console.log("Server started successfulyy on PORT ".concat(PORT));
-            });
-            //return (console.log(res.rows))
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, client.connect()];
+            case 1:
+                conn = _a.sent();
+                return [4 /*yield*/, conn.query(sql)];
+            case 2:
+                res = _a.sent();
+                conn.release();
+                return [2 /*return*/, res];
         }
-        catch (error) {
-            console.log(error);
-        }
-        return [2 /*return*/];
     });
 }); };
-runApp();
+exports.dbConnection = dbConnection;

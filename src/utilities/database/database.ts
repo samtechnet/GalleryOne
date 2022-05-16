@@ -32,4 +32,12 @@ if (ENV === "test") {
   }); 
 }
 
-export default client;
+const dbConnection = async (sql: string):Promise<any> => {
+  const conn = await client.connect();
+  const res = await conn.query(sql);
+  
+  conn.release();
+  return res
+};
+
+export { client, dbConnection };
