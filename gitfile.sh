@@ -6,6 +6,6 @@ git add .
 echo "I'm adding all file here"
 git commit -m "products folder"
 echo "last line of script"
-git branch -m Pere
-git push -u origin Pere
+git branch -m Dev
+git push -u origin Dev
 echo "                         Done"
