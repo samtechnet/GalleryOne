@@ -17,7 +17,7 @@ app.get("/galleryone", async function (req: Request, res: Response) {
     res.send("This is server");
    
     
-  });
+});
 
 const runApp = async ()=> {
     try {
