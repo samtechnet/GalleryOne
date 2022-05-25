@@ -40,7 +40,7 @@ var products_1 = require("../models/products");
 // create an instance of the class imported
 var products = new products_1.AllProducts();
 // method to show all Products in the db
-var index = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+var index = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var myProducts, error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -63,7 +63,7 @@ var index = function (req, res) { return __awaiter(void 0, void 0, void 0, funct
     });
 }); };
 // method to show a product by id
-var show = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+var show = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var id, myProduct, error_2;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -87,7 +87,7 @@ var show = function (req, res) { return __awaiter(void 0, void 0, void 0, functi
     });
 }); };
 // method to create a new product in the db
-var create = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+var create = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var product, newProduct, error_3;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -111,14 +111,14 @@ var create = function (req, res) { return __awaiter(void 0, void 0, void 0, func
                 return [3 /*break*/, 4];
             case 3:
                 error_3 = _a.sent();
-                res.status(401).send('Unauthorized User');
+                res.send(error_3);
                 return [3 /*break*/, 4];
             case 4: return [2 /*return*/];
         }
     });
 }); };
 // method to update a product in the db
-var update = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+var update = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var id, _a, name_1, price, category, description, myProducts, error_4;
     return __generator(this, function (_b) {
         switch (_b.label) {
@@ -140,7 +140,7 @@ var update = function (req, res) { return __awaiter(void 0, void 0, void 0, func
     });
 }); };
 // method to delete a product by id in the db
-var deleteProduct = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+var deleteProduct = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var id, myProducts, error_5;
     return __generator(this, function (_a) {
         switch (_a.label) {

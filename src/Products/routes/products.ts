@@ -6,9 +6,9 @@ import controllers from '../controllers/products';
 const router = express.Router();
 
 router.get('/allproducts', controllers.index);
-router.get('/products/:id', controllers.show);
-router.post('/products', controllers.create);
-router.patch('/products', controllers.update);
-router.delete('/products', controllers.deleteProduct);
+router.get('/:productId', controllers.show);
+router.post('/newproduct', controllers.create);
+router.patch('/:productId', controllers.update);
+router.delete('/:productId', controllers.deleteProduct);
 
 export default router;

@@ -7,5 +7,8 @@ exports.__esModule = true;
 var express_1 = __importDefault(require("express"));
 var products_1 = __importDefault(require("../Products/routes/products"));
 var router = express_1["default"].Router();
+router.get('/', function (req, res) {
+    res.send('Api is live');
+});
 router.use('/products', products_1["default"]);
 exports["default"] = router;

@@ -42,18 +42,26 @@ exports.__esModule = true;
 var express_1 = __importDefault(require("express"));
 var dotenv_1 = __importDefault(require("dotenv"));
 var body_parser_1 = __importDefault(require("body-parser"));
+var cors_1 = __importDefault(require("cors"));
+var morgan_1 = __importDefault(require("morgan"));
+var api_errorhandler_1 = require("./Error/api-errorhandler");
+var apis_1 = __importDefault(require("./Routes/apis"));
 dotenv_1["default"].config();
 var PORT = process.env.PORT;
 var app = (0, express_1["default"])();
 app.use(body_parser_1["default"].json());
-app.get("/galleryone", function (req, res) {
+app.use((0, cors_1["default"])());
+app.use((0, morgan_1["default"])('dev'));
+app.get("/", function (req, res) {
     return __awaiter(this, void 0, void 0, function () {
         return __generator(this, function (_a) {
-            res.send("This is server");
+            res.send("Api available at /galleryone ");
             return [2 /*return*/];
         });
     });
 });
+app.use('/galleryone', apis_1["default"]);
+app.use(api_errorhandler_1.apiErrorHandler);
 var runApp = function () { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
         try {
