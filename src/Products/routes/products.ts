@@ -6,7 +6,7 @@ import controllers from '../controllers/products';
 const router = express.Router();
 
 router.get('/allproducts', controllers.index);
-router.get('/:productId', controllers.show);
+router.get('/search/:id', controllers.show);
 router.post('/newproduct', controllers.create);
 router.patch('/:productId', controllers.update);
 router.delete('/:productId', controllers.deleteProduct);

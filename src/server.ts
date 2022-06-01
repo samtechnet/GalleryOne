@@ -1,11 +1,12 @@
-import express, { Request, Response } from "express";
+import express, { ErrorRequestHandler, NextFunction, Request, Response } from "express";
 import dotenv from "dotenv";
 import bodyParser from "body-parser";
 import cors from "cors";
 import morgan from 'morgan';
-import { apiErrorHandler } from "./Error/api-errorhandler";
+// import { apiErrorHandler } from "./Error/api-errorhandler";
 import apiRoutes from './Routes/apis';
-
+import { AppError } from "./Error/ApiError";
+import { errorHandler } from "./Error/api-errorhandler";
 dotenv.config();
 
 const PORT = process.env.PORT;
@@ -21,7 +22,11 @@ app.get("/", async function (req: Request, res: Response) {
 
 app.use('/galleryone', apiRoutes);
 
-app.use(apiErrorHandler);
+app.all('*', (req: Request, res: Response, next: NextFunction) => {
+    throw new AppError(`URL ${req.path} not found.`, 404);
+})
+
+app.use(errorHandler);
 
 const runApp = async ()=> {
     try {

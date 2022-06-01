@@ -1,14 +1,9 @@
-export class ApiErrors {
-    constructor(public code: number, public message: string){
-        this.code = code;
-        this.message = message;
-    }
+export class AppError extends Error {
+    constructor(public message: string, public statusCode: number) {
+        super(message);
+        this.statusCode = statusCode;
+        // this.isOperational =  true;
 
-    static badRequest(msg: string) {
-        return new ApiErrors(400, msg);
-    }
-
-    static internalError(msg: string) {
-        return new ApiErrors(500, msg)
+        Error.captureStackTrace(this, this.constructor);
     }
 }

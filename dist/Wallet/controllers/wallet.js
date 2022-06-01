@@ -35,50 +35,56 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 exports.__esModule = true;
-var express_1 = __importDefault(require("express"));
-var dotenv_1 = __importDefault(require("dotenv"));
-var body_parser_1 = __importDefault(require("body-parser"));
-var cors_1 = __importDefault(require("cors"));
-var morgan_1 = __importDefault(require("morgan"));
-// import { apiErrorHandler } from "./Error/api-errorhandler";
-var apis_1 = __importDefault(require("./Routes/apis"));
-var ApiError_1 = require("./Error/ApiError");
-var api_errorhandler_1 = require("./Error/api-errorhandler");
-dotenv_1["default"].config();
-var PORT = process.env.PORT;
-var app = (0, express_1["default"])();
-app.use(body_parser_1["default"].json());
-app.use((0, cors_1["default"])());
-app.use((0, morgan_1["default"])('dev'));
-app.get("/", function (req, res) {
-    return __awaiter(this, void 0, void 0, function () {
-        return __generator(this, function (_a) {
-            res.send("Api available at /galleryone ");
-            return [2 /*return*/];
-        });
-    });
-});
-app.use('/galleryone', apis_1["default"]);
-app.all('*', function (req, res, next) {
-    throw new ApiError_1.AppError("URL ".concat(req.path, " not found."), 404);
-});
-app.use(api_errorhandler_1.errorHandler);
-var runApp = function () { return __awaiter(void 0, void 0, void 0, function () {
+var wallet_1 = require("../models/wallet");
+var ApiError_1 = require("../../Error/ApiError");
+var catchAsync_1 = require("../../Error/catchAsync");
+// create an instance of the class imported
+var wallet = new wallet_1.TheWallet();
+// method to show a users ballance by id
+var show = (0, catchAsync_1.catchErrors)(function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var user_id, myWallet;
     return __generator(this, function (_a) {
-        try {
-            app.listen(PORT, function () {
-                console.log("Server started successfulyy on PORT ".concat(PORT));
-            });
+        switch (_a.label) {
+            case 0:
+                user_id = req.params.id;
+                return [4 /*yield*/, wallet.show(user_id)];
+            case 1:
+                myWallet = _a.sent();
+                if (!myWallet) {
+                    throw new ApiError_1.AppError('Invalid Id', 404);
+                }
+                return [2 /*return*/, res.json({
+                        success: 1,
+                        data: myWallet
+                    })];
         }
-        catch (error) {
-            console.log(error);
-            runApp();
-        }
-        return [2 /*return*/];
     });
-}); };
-runApp();
+}); });
+// method to create a new wallet in the db
+var create = (0, catchAsync_1.catchErrors)(function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var clientsWallet, newWallet;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                clientsWallet = {
+                    balance: req.body.name,
+                    user_id: req.body.user_id
+                };
+                return [4 /*yield*/, wallet.create(clientsWallet)];
+            case 1:
+                newWallet = _a.sent();
+                if (!clientsWallet) {
+                    throw new ApiError_1.AppError('Incomplete Details', 400);
+                }
+                return [2 /*return*/, res.json({
+                        message: 'Successfully Created',
+                        data: newWallet
+                    })];
+        }
+    });
+}); });
+exports["default"] = {
+    show: show,
+    create: create
+};

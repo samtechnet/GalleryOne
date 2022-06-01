@@ -1,14 +1,27 @@
-import express, { NextFunction, Request, Response } from 'express';
-import { ApiErrors } from './ApiError';
+import express, { application, NextFunction, Request, Response } from 'express';
+import { AppError } from './ApiError';
 
-export const apiErrorHandler = (err: ApiErrors, req: Request, res: Response, next: NextFunction) => {
-    console.error(err);
+const errDev = (err: AppError, res: Response) => {
+    const statusCode = err.statusCode || 500;
+    res.status(statusCode).json({
+        success: 0,
+        message: err.message,
+        stack: err.stack
+    })
+}
 
-    if (err instanceof ApiErrors) {
-        res.status(err.code).json(err.message);
-        return;
+const errProd = (err: AppError, res: Response) => {
+    const statusCode = err.statusCode || 500;
+    res.status(statusCode).json({
+        success: 0,
+        message: err.message
+    })
+}
+
+export const errorHandler = (err: AppError, req: Request, res: Response, next: NextFunction) => {
+    if(process.env.NODE_ENV === 'dev') {
+        errDev(err, res);
+    }else {
+        errProd(err, res);
     }
-
-    res.status(500).json('something went wrong');
-
 }

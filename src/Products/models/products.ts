@@ -1,6 +1,7 @@
 // import the client connection from the database file
 // @ts-ignore
 import client from "../../database";
+import { catchErrors } from "../../Error/catchAsync";
 
 // create and export a type for the products
 export type Product = {
@@ -25,7 +26,7 @@ export class AllProducts {
         } catch (error) {
             throw new Error(`Cannot get products ${error}`);
         }
-    } 
+    }
 
      // get a item from the database
     async show(id: string): Promise<Product> {

@@ -37,58 +37,53 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 exports.__esModule = true;
 var products_1 = require("../models/products");
+var ApiError_1 = require("../../Error/ApiError");
+var catchAsync_1 = require("../../Error/catchAsync");
 // create an instance of the class imported
 var products = new products_1.AllProducts();
 // method to show all Products in the db
-var index = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var myProducts, error_1;
+var index = (0, catchAsync_1.catchErrors)(function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var myProducts;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                _a.trys.push([0, 2, , 3]);
+                console.log(req.path);
                 return [4 /*yield*/, products.index()];
             case 1:
                 myProducts = _a.sent();
-                res.status(200).send({
-                    data: myProducts,
-                    message: 'Products fetched'
-                });
-                return [3 /*break*/, 3];
-            case 2:
-                error_1 = _a.sent();
-                res.status(400).send('Bad request');
-                return [3 /*break*/, 3];
-            case 3: return [2 /*return*/];
+                if (!myProducts.length) {
+                    throw new ApiError_1.AppError('Record not found', 404);
+                }
+                return [2 /*return*/, res.json({
+                        success: 1,
+                        data: myProducts
+                    })];
         }
     });
-}); };
+}); });
 // method to show a product by id
-var show = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var id, myProduct, error_2;
+var show = (0, catchAsync_1.catchErrors)(function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var id, myProduct;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                _a.trys.push([0, 2, , 3]);
                 id = req.params.id;
                 return [4 /*yield*/, products.show(id)];
             case 1:
                 myProduct = _a.sent();
-                res.status(200).send({
-                    data: myProduct,
-                    message: 'Product was fetched'
-                });
-                return [3 /*break*/, 3];
-            case 2:
-                error_2 = _a.sent();
-                res.status(400).send('Bad request');
-                return [3 /*break*/, 3];
-            case 3: return [2 /*return*/];
+                if (!myProduct) {
+                    throw new ApiError_1.AppError('Record not found', 404);
+                }
+                return [2 /*return*/, res.json({
+                        success: 1,
+                        data: myProduct
+                    })];
         }
     });
-}); };
+}); });
 // method to create a new product in the db
-var create = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var product, newProduct, error_3;
+var create = (0, catchAsync_1.catchErrors)(function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var product, newProduct;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -98,68 +93,57 @@ var create = function (req, res, next) { return __awaiter(void 0, void 0, void 0
                     category: req.body.category,
                     description: req.body.description
                 };
-                _a.label = 1;
-            case 1:
-                _a.trys.push([1, 3, , 4]);
                 return [4 /*yield*/, products.create(product)];
-            case 2:
+            case 1:
                 newProduct = _a.sent();
-                res.status(201).send({
-                    data: newProduct,
-                    message: 'Successfully created'
-                });
-                return [3 /*break*/, 4];
-            case 3:
-                error_3 = _a.sent();
-                res.send(error_3);
-                return [3 /*break*/, 4];
-            case 4: return [2 /*return*/];
+                if (product) {
+                    throw new ApiError_1.AppError('Product details are incomplete', 400);
+                }
+                return [2 /*return*/, res.json({
+                        message: 'Successfully created',
+                        data: newProduct
+                    })];
         }
     });
-}); };
+}); });
 // method to update a product in the db
-var update = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var id, _a, name_1, price, category, description, myProducts, error_4;
+var update = (0, catchAsync_1.catchErrors)(function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var id, _a, name, price, category, description, myProducts;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
-                _b.trys.push([0, 2, , 3]);
                 id = req.params.id;
-                _a = req.body, name_1 = _a.name, price = _a.price, category = _a.category, description = _a.description;
-                return [4 /*yield*/, products.update(id, name_1, price, category, description)];
+                _a = req.body, name = _a.name, price = _a.price, category = _a.category, description = _a.description;
+                return [4 /*yield*/, products.update(id, name, price, category, description)];
             case 1:
                 myProducts = _b.sent();
-                res.status(200).send('Succesfully updated');
-                return [3 /*break*/, 3];
-            case 2:
-                error_4 = _b.sent();
-                res.status(401).send('Unauthorized user');
-                return [3 /*break*/, 3];
-            case 3: return [2 /*return*/];
+                // if(!myProducts) {
+                //     throw new AppError('Product details are incomplete', 400);
+                // }
+                return [2 /*return*/, res.json({
+                        message: 'Succesfully updated',
+                        data: myProducts
+                    })];
         }
     });
-}); };
+}); });
 // method to delete a product by id in the db
-var deleteProduct = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var id, myProducts, error_5;
+var deleteProduct = (0, catchAsync_1.catchErrors)(function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var id, myProducts;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                _a.trys.push([0, 2, , 3]);
                 id = req.params.id;
                 return [4 /*yield*/, products["delete"](id)];
             case 1:
                 myProducts = _a.sent();
-                res.status(200).send('Success');
-                return [3 /*break*/, 3];
-            case 2:
-                error_5 = _a.sent();
-                res.status(401).send('Unauthorized user');
-                return [3 /*break*/, 3];
-            case 3: return [2 /*return*/];
+                if (!id) {
+                    throw new ApiError_1.AppError('Product not found: Invalid ID', 404);
+                }
+                return [2 /*return*/, res.status(200).send('Successfully Deleted')];
         }
     });
-}); };
+}); });
 exports["default"] = {
     index: index,
     show: show,
