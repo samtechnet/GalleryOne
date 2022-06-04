@@ -1,5 +1,6 @@
-import bcrypt from "bcrypt";
-import client from "../utilities/database/database";
+import  bcrypt from "bcrypt";
+import { client, dbConnection, dbConnections } from "../services/database/database";
+import AppError from "../services/errorHandlers/errors";
 
 
 
@@ -10,39 +11,69 @@ export type User = {
   id?: string;
   first_name: string;
   last_name: string;
-    password: string;
+  password_digest: string;
     phone_number: number;
     date_of_birth: number;
     email: string;
-    NIN_number: number;
+    NIN_number?: number;
     home_address: string
 };
 export class UserTable {
   async index(): Promise<User[]> {
-    try {
-      const conn = await client.connect();
-      const sql = "SELECT * FROM Users";
-      const res = await conn.query(sql);
-      conn.release();
-      return res.rows;
-    } catch (error) {
-      throw new Error(`unable to fetch user from database ${error}`);
+    
+    const result = await dbConnection("SELECT * FROM Users");
+    if (!result.rows) {
+      throw new AppError('unable to fetch user from database', 500);
     }
+    return  result.rows;
+
   }
 
+  // async create(user: User): Promise<User> {
+  //   try {
+  //     let loginDetails = {
+  //       firstName: user.first_name,
+  //       lastName: user.last_name,
+  //       email: user.email,
+  //       password: user.password,
+  //       phoneNumber: user.phone_number,
+  //       dateOfBirth: user.date_of_birth,
+  //       homeAddress: user.home_address
+  //     };
+      
+  //     const hash = await bcrypt.hash(
+  //       loginDetails.password + pepper,
+  //       saltRounds
+  //     );
+      // const res = await dbConnections("INSERT INTO users (first_name,last_name,email,phone_number,date_of_birth, password) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *", [
+      //   loginDetails.email,
+      //   hash,
+      // ] );
+      // return res.rows[0];
+  //   } catch (error) {
+  //     throw new Error(
+  //       `unable to create user ${
+  //         (user.first_name, user.last_name)
+  //       }. Error: ${error}`
+  //     );
+  //   }
+  // }
+  
   async create(user: User): Promise<User> {
     try {
       let loginDetails = {
         firstName: user.first_name,
         lastName: user.last_name,
         email: user.email,
-        password: user.password,
-          phoneNumber: user.phone_number,
-        dateOfBirth: user.date_of_birth
+        phoneNumber: user.phone_number,
+        dateOfBirth: user.date_of_birth,
+        homeAddress: user.home_address,
+        password: user.password_digest,
+        nin: user.NIN_number
       };
       const conn = await client.connect();
       const sql =
-        "INSERT INTO users (first_name,last_name,email,phone_number,date_of_birth, password) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *";
+        "INSERT INTO users (first_name,last_name,email,phone_number,date_of_birth,home_address, password_digest) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *";
       const hash = await bcrypt.hash(
         loginDetails.password + pepper,
         saltRounds
@@ -50,6 +81,10 @@ export class UserTable {
       const result = await conn.query(sql, [
         loginDetails.firstName,
         loginDetails.lastName,
+        loginDetails.email,
+        loginDetails.phoneNumber,
+        loginDetails.dateOfBirth,
+        loginDetails.homeAddress,
         hash,
       ]);
       conn.release();
@@ -63,24 +98,28 @@ export class UserTable {
     }
   }
   async show(id: string): Promise<User> {
-    try {
-      const sql = "SELECT * FROM Users WHERE id=($1)";
-      const conn = await client.connect();
-      const result = await conn.query(sql, [id]);
-      conn.release();
-      return result.rows[0];
-    } catch (error) {
-      throw new Error(`Could not find user with id ${id}. Error: ${error}`);
-    }
+  
+    const sql = "SELECT * FROM users WHERE id=($1)";
+    const conn = await client.connect();
+    const result = await conn.query(sql, [id]);
+  conn.release();
+  if (!result.rows[0]) {
+    throw new AppError('Could not find user with id ${id}.', 500);
   }
+    return result.rows[0];
+    
+
+}
+
+
   async authenticate(
-    first_name: string,
+    email: string,
     password: string
   ): Promise<User | null> {
     try {
       const conn = await client.connect();
-      const sql = "SELECT * FROM users WHERE first_name = $1";
-      const result = await conn.query(sql, [first_name]);
+      const sql = "SELECT * FROM users WHERE email = $1";
+      const result = await conn.query(sql, [email]);
       if (result.rows.length) {
         const user = result.rows[0];
         if (await bcrypt.compare(password + pepper, user.password)) {
@@ -92,4 +131,5 @@ export class UserTable {
     } catch (error) {
       throw new Error(`Cannot authenticate user ${error}`);
     }
-    };
+  }
+}

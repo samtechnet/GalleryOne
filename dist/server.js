@@ -42,11 +42,19 @@ exports.__esModule = true;
 var express_1 = __importDefault(require("express"));
 var dotenv_1 = __importDefault(require("dotenv"));
 var body_parser_1 = __importDefault(require("body-parser"));
-var database_1 = require("./utilities/database/database");
+//import cors from "cors";
+var database_1 = require("./services/database/database");
+var user_1 = require("./routes/user");
+// import now from "./utilities/func";
+var errors_1 = __importDefault(require("./services/errorHandlers/errors"));
+var errorController_1 = __importDefault(require("./middleware/errorController"));
 dotenv_1["default"].config();
-var PORT = process.env.PORT;
+var PORT = process.env.PORT || 3000;
 var app = (0, express_1["default"])();
 app.use(body_parser_1["default"].json());
+app.use(express_1["default"].json());
+(0, user_1.user_routes)(app);
+(0, user_1.cognito_routes)(app);
 app.get("/galleryone", function (req, res) {
     return __awaiter(this, void 0, void 0, function () {
         return __generator(this, function (_a) {
@@ -55,19 +63,32 @@ app.get("/galleryone", function (req, res) {
         });
     });
 });
+app.all('*', function (req, res, next) {
+    throw new errors_1["default"]("Requested URL ".concat(req.path, " not found!"), 404);
+});
+app.use(errorController_1["default"]);
 var runApp = function () { return __awaiter(void 0, void 0, void 0, function () {
+    var result, res, error_1;
     return __generator(this, function (_a) {
-        try {
-            (0, database_1.dbConnection)('SELECT SESSION_USER');
-            app.listen(PORT, function () {
-                console.log("Server started successfulyy on PORT ".concat(PORT));
-            });
-            //return (console.log(res.rows))
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, (0, database_1.dbConnection)('SELECT SESSION_USER')];
+            case 1:
+                result = _a.sent();
+                if (result.rows) {
+                    res = console.log(result.rows);
+                }
+                app.listen(PORT, function () {
+                    console.log("Server started successfulyy on PORT ".concat(PORT));
+                });
+                return [3 /*break*/, 3];
+            case 2:
+                error_1 = _a.sent();
+                console.log(error_1);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
         }
-        catch (error) {
-            console.log(error);
-        }
-        return [2 /*return*/];
     });
 }); };
 runApp();

@@ -7,5 +7,7 @@ CREATE TABLE users(
     phone_number BIGINT NOT NULL UNIQUE,
     home_address VARCHAR(255),
     NIN_number int,
-    date_of_birth DATE NOT NULL,
+    date_of_birth DATE 
 )
+ALTER TABLE users
+ALTER COLUMN date_of_birth DATE

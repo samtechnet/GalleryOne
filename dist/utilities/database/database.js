@@ -39,7 +39,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 exports.__esModule = true;
-exports.dbConnection = exports.client = void 0;
+exports.dbConnections = exports.dbConnection = exports.client = void 0;
 var dotenv_1 = __importDefault(require("dotenv"));
 var pg_1 = require("pg");
 dotenv_1["default"].config();
@@ -81,3 +81,26 @@ var dbConnection = function (sql) { return __awaiter(void 0, void 0, void 0, fun
     });
 }); };
 exports.dbConnection = dbConnection;
+var dbConnections = function (sql) { return __awaiter(void 0, void 0, void 0, function () {
+    var person, conn, res;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                person = /** @class */ (function () {
+                    function person() {
+                    }
+                    ;
+                    return person;
+                }());
+                return [4 /*yield*/, client.connect()];
+            case 1:
+                conn = _a.sent();
+                return [4 /*yield*/, conn.query(sql)];
+            case 2:
+                res = _a.sent();
+                conn.release();
+                return [2 /*return*/, res];
+        }
+    });
+}); };
+exports.dbConnections = dbConnections;

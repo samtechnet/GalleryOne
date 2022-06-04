@@ -3,3 +3,6 @@ simply run : "npm run gitty" command  after you have edited the commit message i
 we will merge code in Dev branch to master branch after reveiw 
 
 pls push code at intervals, when you work on something push and ensure commit message correspond with whatever was done for easy tracking 
+
+
+To generate random strings : node  require('crypto').randomBytes(64).toString('hex')
