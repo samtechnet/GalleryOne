@@ -22,6 +22,7 @@ app.get("/", async function (req: Request, res: Response) {
 
 app.use('/galleryone', apiRoutes);
 
+
 app.all('*', (req: Request, res: Response, next: NextFunction) => {
     throw new AppError(`URL ${req.path} not found.`, 404);
 })

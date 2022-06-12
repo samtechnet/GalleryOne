@@ -36,106 +36,159 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-var products_1 = require("../models/products");
+var accounts_1 = require("../Models/accounts");
 var ApiError_1 = require("../../Error/ApiError");
 var catchAsync_1 = require("../../Error/catchAsync");
 // create an instance of the class imported
-var products = new products_1.AllProducts();
-// method to show all Products in the db
+var accounts = new accounts_1.AllAccounts();
+// method to show all accounts in the db
 var index = (0, catchAsync_1.catchErrors)(function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var myProducts;
+    var theAccounts;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, products.index()];
+            case 0: return [4 /*yield*/, accounts.index()];
             case 1:
-                myProducts = _a.sent();
-                if (!myProducts.length) {
+                theAccounts = _a.sent();
+                if (!theAccounts.length) {
                     throw new ApiError_1.AppError('Record not found', 404);
                 }
                 return [2 /*return*/, res.json({
                         success: 1,
-                        data: myProducts
+                        data: theAccounts
                     })];
         }
     });
 }); });
-// method to show a product by id
+// method to show an account by id
 var show = (0, catchAsync_1.catchErrors)(function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var id, myProduct;
+    var user_id, myAccount;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                id = req.params.id;
-                return [4 /*yield*/, products.show(id)];
+                user_id = req.params.user_id;
+                return [4 /*yield*/, accounts.show(user_id)];
             case 1:
-                myProduct = _a.sent();
-                if (!myProduct) {
+                myAccount = _a.sent();
+                if (!myAccount) {
                     throw new ApiError_1.AppError('Record not found', 404);
                 }
                 return [2 /*return*/, res.json({
                         success: 1,
-                        data: myProduct
+                        data: myAccount
                     })];
         }
     });
 }); });
-// method to create a new product in the db
-var create = (0, catchAsync_1.catchErrors)(function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var product, newProduct;
+// method to show an account by id
+var showBalance = (0, catchAsync_1.catchErrors)(function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var user_id, myAccount;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                product = {
-                    name: req.body.name,
-                    price: req.body.price,
-                    category: req.body.category,
-                    description: req.body.description
-                };
-                return [4 /*yield*/, products.create(product)];
+                user_id = req.params.user_id;
+                return [4 /*yield*/, accounts.showBalance(user_id)];
             case 1:
-                newProduct = _a.sent();
-                if (product) {
+                myAccount = _a.sent();
+                if (!myAccount) {
+                    throw new ApiError_1.AppError('Record not found', 404);
+                }
+                return [2 /*return*/, res.json({
+                        success: 1,
+                        data: myAccount
+                    })];
+        }
+    });
+}); });
+// method to create a new account in the db
+var create = (0, catchAsync_1.catchErrors)(function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var amount, account, newAccount;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                amount = 0;
+                account = {
+                    user_id: req.body.user_id,
+                    accounts_number: req.body.accounts_number,
+                    amount: amount,
+                    balance: req.body.balance
+                };
+                return [4 /*yield*/, accounts.create(account)];
+            case 1:
+                newAccount = _a.sent();
+                if (!newAccount) {
                     throw new ApiError_1.AppError('Product details are incomplete', 400);
                 }
                 return [2 /*return*/, res.json({
                         message: 'Successfully created',
-                        data: newProduct
+                        data: newAccount
                     })];
         }
     });
 }); });
-// method to update a product in the db
-var update = (0, catchAsync_1.catchErrors)(function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var id, _a, name, price, category, description, myProducts;
-    return __generator(this, function (_b) {
-        switch (_b.label) {
-            case 0:
-                id = req.params.id;
-                _a = req.body, name = _a.name, price = _a.price, category = _a.category, description = _a.description;
-                return [4 /*yield*/, products.update(id, name, price, category, description)];
-            case 1:
-                myProducts = _b.sent();
-                // if(!myProducts) {
-                //     throw new AppError('Product details are incomplete', 400);
-                // }
-                return [2 /*return*/, res.json({
-                        message: 'Succesfully updated',
-                        data: myProducts
-                    })];
-        }
-    });
-}); });
-// method to delete a product by id in the db
-var deleteProduct = (0, catchAsync_1.catchErrors)(function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var id, myProducts;
+// method to update an account in the db
+var debitAccount = (0, catchAsync_1.catchErrors)(function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var account, myAccounts, amount;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                id = req.params.id;
-                return [4 /*yield*/, products["delete"](id)];
+                account = {
+                    user_id: req.body.user_id,
+                    accounts_number: req.body.accounts_number,
+                    amount: req.body.amount - req.body.amount,
+                    balance: req.body.balance - req.body.amount
+                };
+                return [4 /*yield*/, accounts.debitAccount(account)];
+            case 1:
+                myAccounts = _a.sent();
+                if (!myAccounts) {
+                    throw new ApiError_1.AppError('Account details are incomplete', 400);
+                }
+                if (account.amount !== 0) {
+                    amount = 0;
+                }
+                return [2 /*return*/, res.json({
+                        message: 'Succesfully updated',
+                        data: myAccounts
+                    })];
+        }
+    });
+}); });
+// method to update an account in the db
+var creditAccount = (0, catchAsync_1.catchErrors)(function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var account, myAccounts;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                account = {
+                    user_id: req.body.user_id,
+                    accounts_number: req.body.accounts_number,
+                    amount: req.body.amount - req.body.amount,
+                    balance: req.body.balance + req.body.amount
+                };
+                return [4 /*yield*/, accounts.creditAccount(account)];
+            case 1:
+                myAccounts = _a.sent();
+                if (!myAccounts) {
+                    throw new ApiError_1.AppError('Account details are incomplete', 400);
+                }
+                return [2 /*return*/, res.json({
+                        message: 'Succesfully updated',
+                        data: myAccounts
+                    })];
+        }
+    });
+}); });
+// method to delete a account by id in the db
+var deleteAccount = (0, catchAsync_1.catchErrors)(function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var user_id, myProducts;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                user_id = req.params.id;
+                return [4 /*yield*/, accounts["delete"](user_id)];
             case 1:
                 myProducts = _a.sent();
-                if (!id) {
+                if (!user_id) {
                     throw new ApiError_1.AppError('Product not found: Invalid ID', 404);
                 }
                 return [2 /*return*/, res.status(200).send('Successfully Deleted')];
@@ -145,7 +198,9 @@ var deleteProduct = (0, catchAsync_1.catchErrors)(function (req, res, next) { re
 exports["default"] = {
     index: index,
     show: show,
+    showBalance: showBalance,
     create: create,
-    update: update,
-    deleteProduct: deleteProduct
+    creditAccount: creditAccount,
+    debitAccount: debitAccount,
+    deleteAccount: deleteAccount
 };

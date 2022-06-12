@@ -36,4 +36,4 @@ if (NODE_ENV === 'dev') {
     });
 }
 
-  export default client;
+export default client;

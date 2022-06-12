@@ -11,7 +11,6 @@ const products = new AllProducts();
 
 // method to show all Products in the db
 const index = catchErrors(async (req: Request, res: Response, next: NextFunction) => {
-        console.log(req.path);
         const myProducts = await products.index();
         if (!myProducts.length) {
             throw new AppError('Record not found', 404);

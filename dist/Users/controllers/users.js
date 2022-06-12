@@ -35,110 +35,153 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 exports.__esModule = true;
-var products_1 = require("../models/products");
+exports.verifyAuthToken = void 0;
+var users_1 = require("../models/users");
+var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 var ApiError_1 = require("../../Error/ApiError");
 var catchAsync_1 = require("../../Error/catchAsync");
-// create an instance of the class imported
-var products = new products_1.AllProducts();
-// method to show all Products in the db
+// create an instance of class of users imported
+var users = new users_1.GalleryOneUsers();
+// method to show all Users in the db
 var index = (0, catchAsync_1.catchErrors)(function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var myProducts;
+    var allUsers;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, products.index()];
+            case 0: return [4 /*yield*/, users.index()];
             case 1:
-                myProducts = _a.sent();
-                if (!myProducts.length) {
+                allUsers = _a.sent();
+                if (!allUsers.length) {
                     throw new ApiError_1.AppError('Record not found', 404);
                 }
                 return [2 /*return*/, res.json({
                         success: 1,
-                        data: myProducts
+                        data: allUsers
                     })];
         }
     });
 }); });
-// method to show a product by id
+// method to show a user by id
 var show = (0, catchAsync_1.catchErrors)(function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var id, myProduct;
+    var id, singleUser;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 id = req.params.id;
-                return [4 /*yield*/, products.show(id)];
+                return [4 /*yield*/, users.show(id)];
             case 1:
-                myProduct = _a.sent();
-                if (!myProduct) {
+                singleUser = _a.sent();
+                if (!singleUser) {
                     throw new ApiError_1.AppError('Record not found', 404);
                 }
                 return [2 /*return*/, res.json({
                         success: 1,
-                        data: myProduct
+                        data: singleUser
                     })];
         }
     });
 }); });
-// method to create a new product in the db
+// method to create a new user in the db
 var create = (0, catchAsync_1.catchErrors)(function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var product, newProduct;
+    var user, newUser;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                product = {
-                    name: req.body.name,
-                    price: req.body.price,
-                    category: req.body.category,
-                    description: req.body.description
+                user = {
+                    username: req.body.username,
+                    password: req.body.password
                 };
-                return [4 /*yield*/, products.create(product)];
+                return [4 /*yield*/, users.create(user)];
             case 1:
-                newProduct = _a.sent();
-                if (product) {
-                    throw new ApiError_1.AppError('Product details are incomplete', 400);
+                newUser = _a.sent();
+                if (!newUser) {
+                    throw new ApiError_1.AppError('User details are incomplete', 400);
                 }
+                console.log(newUser);
                 return [2 /*return*/, res.json({
                         message: 'Successfully created',
-                        data: newProduct
+                        data: newUser
                     })];
         }
     });
 }); });
-// method to update a product in the db
+// method to authenticate the user logining in
+var authenticate = (0, catchAsync_1.catchErrors)(function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var user, userAuthenticated, token;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                user = {
+                    username: req.body.username,
+                    password: req.body.password
+                };
+                if (!user) {
+                    throw new ApiError_1.AppError('incomplete details', 400);
+                }
+                return [4 /*yield*/, users.authenticate(req.body.username, req.body.password)];
+            case 1:
+                userAuthenticated = _a.sent();
+                token = jsonwebtoken_1["default"].sign({ user: userAuthenticated }, process.env.TOKEN_SECRET);
+                console.log(token);
+                return [2 /*return*/, res.status(201).send('Successfully Login')];
+        }
+    });
+}); });
+// method to verify that the user is suing an authorized token
+var verifyAuthToken = function (req, res, next) {
+    try {
+        var authorizationHeader = req.headers.authorization;
+        var token = authorizationHeader === null || authorizationHeader === void 0 ? void 0 : authorizationHeader.split(' ')[1];
+        var decoded = jsonwebtoken_1["default"].verify(token, process.env.TOKEN_SECRET);
+        if (!decoded) {
+            throw new ApiError_1.AppError('Unauthorized user', 401);
+        }
+        next();
+    }
+    catch (error) {
+        throw new ApiError_1.AppError('Something went wrong', 500);
+    }
+};
+exports.verifyAuthToken = verifyAuthToken;
+// method to update a user in the db
 var update = (0, catchAsync_1.catchErrors)(function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var id, _a, name, price, category, description, myProducts;
+    var id, _a, username, password, updatedUser;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
                 id = req.params.id;
-                _a = req.body, name = _a.name, price = _a.price, category = _a.category, description = _a.description;
-                return [4 /*yield*/, products.update(id, name, price, category, description)];
+                _a = req.body, username = _a.username, password = _a.password;
+                return [4 /*yield*/, users.update(id, username, password)];
             case 1:
-                myProducts = _b.sent();
-                // if(!myProducts) {
-                //     throw new AppError('Product details are incomplete', 400);
-                // }
+                updatedUser = _b.sent();
+                if (!updatedUser) {
+                    throw new ApiError_1.AppError('Incomplete details', 400);
+                }
+                console.log(updatedUser);
                 return [2 /*return*/, res.json({
-                        message: 'Succesfully updated',
-                        data: myProducts
+                        message: 'Successfully updated',
+                        data: updatedUser
                     })];
         }
     });
 }); });
-// method to delete a product by id in the db
-var deleteProduct = (0, catchAsync_1.catchErrors)(function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var id, myProducts;
+// method to delete a user by id in the db
+var deleteUser = (0, catchAsync_1.catchErrors)(function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var id, oneUser;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 id = req.params.id;
-                return [4 /*yield*/, products["delete"](id)];
-            case 1:
-                myProducts = _a.sent();
                 if (!id) {
-                    throw new ApiError_1.AppError('Product not found: Invalid ID', 404);
+                    throw new ApiError_1.AppError('Invalid ID', 404);
                 }
-                return [2 /*return*/, res.status(200).send('Successfully Deleted')];
+                return [4 /*yield*/, users["delete"](id)];
+            case 1:
+                oneUser = _a.sent();
+                return [2 /*return*/, res.send('Successfully deleted User').status(200)];
         }
     });
 }); });
@@ -146,6 +189,7 @@ exports["default"] = {
     index: index,
     show: show,
     create: create,
+    authenticate: authenticate,
     update: update,
-    deleteProduct: deleteProduct
+    deleteUser: deleteUser
 };
