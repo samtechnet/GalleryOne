@@ -127,7 +127,7 @@ var create = (0, catchAsync_1.catchErrors)(function (req, res, next) { return __
 }); });
 // method to update an account in the db
 var debitAccount = (0, catchAsync_1.catchErrors)(function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var account, myAccounts, amount;
+    var account, myAccounts;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -142,9 +142,6 @@ var debitAccount = (0, catchAsync_1.catchErrors)(function (req, res, next) { ret
                 myAccounts = _a.sent();
                 if (!myAccounts) {
                     throw new ApiError_1.AppError('Account details are incomplete', 400);
-                }
-                if (account.amount !== 0) {
-                    amount = 0;
                 }
                 return [2 /*return*/, res.json({
                         message: 'Succesfully updated',
