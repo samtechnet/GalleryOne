@@ -1,11 +1,11 @@
 // import AmazonCognitoIdentity, { CognitoAccessToken } from "amazon-cognito-identity-js";
 import AppError from "../../services/errorHandlers/errors";
-import { CognitoIdentityProviderClient, SignUpCommand, ConfirmSignUpCommand, PasswordResetRequiredException, InitiateAuthCommand,ForgotPasswordCommand,ResendConfirmationCodeCommand,ConfirmForgotPasswordCommand } from "@aws-sdk/client-cognito-identity-provider";
+import { CognitoIdentityProviderClient, SignUpCommand, ConfirmSignUpCommand, PasswordResetRequiredException, InitiateAuthCommand,ForgotPasswordCommand,ResendConfirmationCodeCommand,ConfirmForgotPasswordCommand,DeleteUserCommand } from "@aws-sdk/client-cognito-identity-provider";
 //import { SSOClient, LogoutCommand } from "@aws-sdk/client-sso";
 import express, { Request, Response, NextFunction } from 'express';
 import bcrypt from "bcrypt";
 import { client } from "../database/database";
-import { use, used,string}  from "../../services/errorHandlers/catchAsync";
+import { use, used,string,numberVoid}  from "../../services/errorHandlers/catchAsync";
 import crypto from "crypto";
 
 
@@ -26,6 +26,7 @@ function generateHash(username: string): string{
 
 const signUp = use(async (req: Request, res: Response) => {
     const {email, first_name, last_name, phone_number,password } = req.body;
+    
     let userAttr = [];
     // userAttr.push({ Name: 'username', Value: first_name });
     // userAttr.push({ Name: 'last_name', Value: last_name });
@@ -37,7 +38,8 @@ const params = {
     ClientId: clientId,
    UserAttributes: userAttr,
     SecretHash: generateHash(email), 
-} 
+    } 
+    !params && res.status(401).json("wrong credentials")
     const command = new SignUpCommand(params);
         const data = await clients.send(command);
         if (!data){
@@ -72,6 +74,7 @@ const confirmSignUp = used(async (req: Request, res: Response) => {
         ClientId: clientId,
         SecretHash: generateHash(email)
     }
+
     const command = new ConfirmSignUpCommand(input);
     const response = await clients.send(command);
     if (response) {
@@ -112,16 +115,18 @@ const resendConfirmationCode = used(async (req: Request, res: Response) => {
 
 const signIn = used(async (req: Request, res: Response) => {
     const { email, password } = req.body;
+    let username= email;
     const input = {
         AuthFlow: "USER_PASSWORD_AUTH",
         AuthParameters: {
-            "USERNAME": email,
+            "USERNAME": username,
             "PASSWORD": password,
-            "SECRET_HASH": generateHash(email)
+            "SECRET_HASH": generateHash(username)
         },
         ClientId: clientId,
        
     }
+    
     const command = new InitiateAuthCommand(input);
     const response = await clients.send(command);
     if (response) {
@@ -133,6 +138,34 @@ const signIn = used(async (req: Request, res: Response) => {
     console.log(response)
 })
 
+const deleteUser = numberVoid(async (req: Request, res: Response) => {
+    
+    const authorizationHeader = req.headers.authorization;
+    
+    if (authorizationHeader) {
+        const token = authorizationHeader?.split(" ")[1];
+    const input = {
+        AccessToken: token
+        }
+        const command = new DeleteUserCommand(input);
+        const response = await clients.send(command);
+        console.log(response)
+    if (response) {
+        const conn = await client.connect();
+      const sql ="DELETE FROM users WHERE email=$1";
+    }
+    } else {
+        return res.status(401).json("Token is not valid")
+    }
+    
+    // if (response) {
+    //     return res.json({
+    //        success: true,
+    //         message: response
+    //     }).statusCode
+    // }
+    
+})
 const signOut = async (req: Request, res: Response) => {
     const {  } = req.body;
     const input = {
@@ -206,7 +239,7 @@ throw new AppError("something went wrong",400)
 })
 
 const test = async (req: Request, res: Response) => {
-    return res.send(" testing is okay ")
+    return res.json(" testing is okay ")
 }
 
 

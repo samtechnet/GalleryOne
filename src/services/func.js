@@ -1,3 +1,15 @@
+const jpickle = require('jpickle');
+const fs = require('fs');
+const path = require("path")
+const appdir = process.cwd();
+const file =path.join(appdir, "/auction_model.pkl")
+const binary = fs.readFileSync(file, "binary")
+const data=jpickle.loads(binary);
+
+console.log(data)
+
+
+
 
 // const user_routes = (app: express.Application) => {
 //     app.get("/users",index)

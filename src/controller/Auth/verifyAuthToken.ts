@@ -1,4 +1,4 @@
-import Jwt from "jsonwebtoken";
+import Jwt, { JwtPayload } from "jsonwebtoken";
 import express, { NextFunction, Request, response, Response } from "express";
 import jwkToPem from "jwk-to-pem";
 import fetch from "node-fetch";
@@ -21,20 +21,47 @@ let pems = {};
 const verifyAuthToken = (req: Request, res: Response, next: NextFunction) => {
   try {
     const authorizationHeader = req.headers.authorization;
-    const token = authorizationHeader?.split(" ")[1];
+    const token= authorizationHeader.split(" ")[1];
+    const token2 = authorizationHeader?.split(" ")[2];
+    const token3 = authorizationHeader?.split(" ")[3];
     if (!token) {
-      
-      return res.status(401).end();
+
+      res.writeHead(401).end();
+    } else {
+      const decoded = Jwt.decode(token);
+      const keys=decoded
+      //const kid= decoded.payload;
+     // const pem = pems[]
+     // console.log(kid.username);
+      console.log(decoded)
+     
     }
-    const decoded = Jwt.decode(token );
-    console.log(decoded)
+    //console.log(decoded)
+    
+    //console.log(decoded.username)
+    //console.log(decoded);
+    //console.log(username);
     next();
   } catch (error) {
-    res.status(401);
-    res.json({ error });
+  
+    throw new AppError(`could not verify with ${error}`, 400)
   }
 };
-
+/*
+{
+  sub: '0346c76f-3294-4345-8fe7-75b9b3662553',
+  iss: 'https://cognito-idp.us-east-1.amazonaws.com/us-east-1_iuuMT9cCD',
+  client_id: '20r1pknr2ekk4pqma7t7b019ps',
+  origin_jti: 'd42143bd-0321-40a1-9c9e-c2ab8f0dd088',
+  event_id: '3b16bb6e-816d-4e9b-9102-461bd496a4d7',
+  token_use: 'access',
+  scope: 'aws.cognito.signin.user.admin',
+  auth_time: 1654198470,
+  exp: 1654202070,
+  iat: 1654198470,
+  jti: 'f62123e6-ca1e-48d7-befc-734a5b71e678',
+  username: '0346c76f-3294-4345-8fe7-75b9b3662553'
+}*/
 // const verifyAuthToken = async (req: Request, res: Response, next: NextFunction) => {
 //   try {
 

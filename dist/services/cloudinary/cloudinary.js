@@ -39,78 +39,62 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 exports.__esModule = true;
-exports.dbConnectionArrayOfValues = exports.dbConnectionWithId = exports.dbConnection = exports.client = void 0;
-var dotenv_1 = __importDefault(require("dotenv"));
-var pg_1 = require("pg");
-dotenv_1["default"].config();
-var _a = process.env, POSTGRES_HOST = _a.POSTGRES_HOST, POSTGRES_DB = _a.POSTGRES_DB, POSTGRES_DB_TEST = _a.POSTGRES_DB_TEST, POSTGRES_USER = _a.POSTGRES_USER, POSTGRES_PASSWORD = _a.POSTGRES_PASSWORD, ENV = _a.ENV;
-var client;
-exports.client = client;
-console.log("ENV", ENV);
-if (ENV === "test") {
-    console.log("I am in test mode");
-    exports.client = client = new pg_1.Pool({
-        host: POSTGRES_HOST,
-        database: POSTGRES_DB_TEST,
-        user: POSTGRES_USER,
-        password: POSTGRES_PASSWORD
-    });
-}
-else {
-    //console.log("I am in dev mode");
-    exports.client = client = new pg_1.Pool({
-        host: POSTGRES_HOST,
-        database: POSTGRES_DB,
-        user: POSTGRES_USER,
-        password: POSTGRES_PASSWORD
-    });
-}
-var dbConnection = function (sql) { return __awaiter(void 0, void 0, void 0, function () {
-    var conn, res;
+exports.cloud = exports.store = exports.upload = void 0;
+var cloudinary_1 = require("cloudinary");
+var catchAsync_1 = require("../../services/errorHandlers/catchAsync");
+var multer_1 = __importDefault(require("multer"));
+var appdir = process.cwd();
+cloudinary_1.v2.config({
+    cloud_name: 'dsl47cce0',
+    api_key: '356752717168943',
+    api_secret: 'hTZNQdVuOn4HxTv6WZTqlrNGqAg',
+    secure: true
+});
+var cloud = function (path, myFiles) { return __awaiter(void 0, void 0, void 0, function () {
+    var uploader;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, client.connect()];
+            case 0: return [4 /*yield*/, cloudinary_1.v2.uploader.upload(path, { upload_preset: myFiles })];
             case 1:
-                conn = _a.sent();
-                return [4 /*yield*/, conn.query(sql)];
-            case 2:
-                res = _a.sent();
-                conn.release();
-                return [2 /*return*/, res];
+                uploader = _a.sent();
+                // console.log(upload)
+                return [2 /*return*/, uploader.secure_url];
         }
     });
 }); };
-exports.dbConnection = dbConnection;
-var dbConnectionWithId = function (sql, id) { return __awaiter(void 0, void 0, void 0, function () {
-    var conn, res;
+exports.cloud = cloud;
+//const storedImages = path.join(appdir, "/src/services/cloudinary/images")
+var fileStorageEngine = multer_1["default"].diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, "images/");
+    },
+    filename: function (req, file, cb) {
+        // console.log(file + " from multer storage engine");
+        cb(null, Date.now() + '--' + file.originalname);
+    }
+});
+var fileFilter = function (req, file, cb) {
+    if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+        cb(null, true);
+    }
+    else if (file.mimetype === 'application/pdf') {
+        cb(null, true);
+    }
+    else {
+        cb({ message: "Unspported file format ".concat(file.mimetype) });
+    }
+};
+var upload = (0, multer_1["default"])({ storage: fileStorageEngine, limits: { fileSize: 4200 * 3800 }, fileFilter: fileFilter });
+exports.upload = upload;
+var store = (0, catchAsync_1.image)(function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var result;
     return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4 /*yield*/, client.connect()];
-            case 1:
-                conn = _a.sent();
-                return [4 /*yield*/, conn.query(sql, [id])];
-            case 2:
-                res = _a.sent();
-                conn.release();
-                return [2 /*return*/, res];
-        }
+        result = req.file;
+        res.status(200).json({
+            message: "Single file upload success",
+            data: result === null || result === void 0 ? void 0 : result.path
+        });
+        return [2 /*return*/];
     });
-}); };
-exports.dbConnectionWithId = dbConnectionWithId;
-var dbConnectionArrayOfValues = function (sql, _a) { return __awaiter(void 0, void 0, void 0, function () {
-    var conn, res;
-    return __generator(this, function (_b) {
-        switch (_b.label) {
-            case 0: return [4 /*yield*/, client.connect()];
-            case 1:
-                conn = _b.sent();
-                return [4 /*yield*/, conn.query(sql, [])];
-            case 2:
-                res = _b.sent();
-                console.log([]);
-                conn.release();
-                return [2 /*return*/, res];
-        }
-    });
-}); };
-exports.dbConnectionArrayOfValues = dbConnectionArrayOfValues;
+}); });
+exports.store = store;

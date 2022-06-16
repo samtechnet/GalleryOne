@@ -1,5 +1,5 @@
 import  bcrypt from "bcrypt";
-import { client, dbConnection, dbConnections } from "../services/database/database";
+import { client, dbConnection } from "../services/database/database";
 import AppError from "../services/errorHandlers/errors";
 
 

@@ -14,17 +14,16 @@ var user_routes = function (app) {
     app.get("/users", user_1.index),
         app.post("/create", user_1.create),
         app.get("/users/:id", user_1.show),
-        //
-        app.post("/signUp", cognito_services_1.signUp),
-        app.post("/confirmSignUp", cognito_services_1.confirmSignUp),
-        app.post("/login", user_1.authenticate),
-        app.post("/signIn", cognito_services_1.signIn),
-        app.post("/forgotPassword", cognito_services_1.forgotPassword),
-        app.post("/resendConfirmationCode", cognito_services_1.resendConfirmationCode);
+        app.post("/login", user_1.authenticate);
 };
 exports.user_routes = user_routes;
 var cognito_routes = function (app) {
     app.get("/tes", verifyAuthToken_1["default"], cognito_services_1.test),
-        app.post("/confirmForgotPassword", cognito_services_1.confirmForgotPassword);
+        app.post("/signIn", cognito_services_1.signIn),
+        app.post("/signUp", cognito_services_1.signUp),
+        app.post("/confirmSignUp", cognito_services_1.confirmSignUp),
+        app.post("/forgotPassword", cognito_services_1.forgotPassword),
+        app.post("/resendConfirmationCode", cognito_services_1.resendConfirmationCode);
+    app.post("/confirmForgotPassword", cognito_services_1.confirmForgotPassword);
 };
 exports.cognito_routes = cognito_routes;

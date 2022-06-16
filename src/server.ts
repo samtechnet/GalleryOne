@@ -4,6 +4,7 @@ import bodyParser, { json } from "body-parser";
 //import cors from "cors";
 import { client, dbConnection } from "./services/database/database"
 import { user_routes, cognito_routes } from "./routes/user";
+import { cloudinary_routes } from "./routes/product";
 // import now from "./utilities/func";
 import AppError from "./services/errorHandlers/errors";
 import errorController from "./middleware/errorController";
@@ -12,7 +13,7 @@ import { use, used }  from "./services/errorHandlers/catchAsync";
 dotenv.config();
 
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || process.env.PORT2;
 
 
 const app: express.Application = express();
@@ -23,6 +24,7 @@ app.use(express.json());
 
 user_routes(app);
 cognito_routes(app);
+cloudinary_routes(app);
 app.get("/galleryone", async function (req: Request, res: Response) {
   
     res.send("This is server");

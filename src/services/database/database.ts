@@ -1,5 +1,6 @@
 import dotenv from "dotenv";
 import { Pool } from "pg";
+import { Product } from "../../models/product";
 
 dotenv.config();
 
@@ -39,17 +40,24 @@ const dbConnection = async (sql: string):Promise<any> => {
   conn.release();
   return res
 };
-const dbConnections = async (sql: string,
+const dbConnectionWithId = async (sql: string, id:string
 ): Promise<any> => {
-  class person {
-    ;
-    
-  }
+ 
   const conn = await client.connect();
-  const res = await conn.query(sql, );
+  const res = await conn.query(sql,[id] );
   
   conn.release();
   return res
 };
 
-export { client, dbConnection, dbConnections };
+const dbConnectionArrayOfValues = async (sql: string, []
+  ): Promise<any> => {
+   
+    const conn = await client.connect();
+    const res = await conn.query(sql,[] );
+    console.log([])
+    conn.release();
+    return res
+  };
+
+export { client, dbConnection, dbConnectionWithId,dbConnectionArrayOfValues };

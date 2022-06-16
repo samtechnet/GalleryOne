@@ -78,6 +78,7 @@ var signUp = (0, catchAsync_1.use)(function (req, res) { return __awaiter(void 0
                     UserAttributes: userAttr,
                     SecretHash: generateHash(email)
                 };
+                !params && res.status(401).json("wrong credentials");
                 command = new client_cognito_identity_provider_1.SignUpCommand(params);
                 return [4 /*yield*/, clients.send(command)];
             case 2:
@@ -98,13 +99,13 @@ var signUp = (0, catchAsync_1.use)(function (req, res) { return __awaiter(void 0
                             success: true,
                             data: result.rows[0],
                             awsData: data,
-                            response: "successfully created user"
+                            response: "User created successfully, please check your email for confirmation code"
                         })];
                 }
                 else {
                     res.json({
                         status: false,
-                        response: "Unseccfully attempt to register user"
+                        response: "Unsuccessful attempt to register user"
                     }).status(401);
                 }
                 throw new errors_1["default"]("something went wrong", 400);
@@ -131,7 +132,7 @@ var confirmSignUp = (0, catchAsync_1.used)(function (req, res) { return __awaite
                 if (response) {
                     return [2 /*return*/, res.json({
                             success: true,
-                            message: "Hurray! your email is valid and you are now registered user",
+                            message: "Hurray! your email is valid and you are now a registered user",
                             data: response
                         }).statusCode];
                 }
@@ -173,17 +174,18 @@ var resendConfirmationCode = (0, catchAsync_1.used)(function (req, res) { return
 }); });
 exports.resendConfirmationCode = resendConfirmationCode;
 var signIn = (0, catchAsync_1.used)(function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, email, password, input, command, response;
+    var _a, email, password, username, input, command, response;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
                 _a = req.body, email = _a.email, password = _a.password;
+                username = email;
                 input = {
                     AuthFlow: "USER_PASSWORD_AUTH",
                     AuthParameters: {
-                        "USERNAME": email,
+                        "USERNAME": username,
                         "PASSWORD": password,
-                        "SECRET_HASH": generateHash(email)
+                        "SECRET_HASH": generateHash(username)
                     },
                     ClientId: clientId
                 };
@@ -203,6 +205,34 @@ var signIn = (0, catchAsync_1.used)(function (req, res) { return __awaiter(void 
     });
 }); });
 exports.signIn = signIn;
+var deleteUser = (0, catchAsync_1.numberVoid)(function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var authorizationHeader, token, input, command, response, conn, sql;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                authorizationHeader = req.headers.authorization;
+                if (!authorizationHeader) return [3 /*break*/, 4];
+                token = authorizationHeader === null || authorizationHeader === void 0 ? void 0 : authorizationHeader.split(" ")[1];
+                input = {
+                    AccessToken: token
+                };
+                command = new client_cognito_identity_provider_1.DeleteUserCommand(input);
+                return [4 /*yield*/, clients.send(command)];
+            case 1:
+                response = _a.sent();
+                console.log(response);
+                if (!response) return [3 /*break*/, 3];
+                return [4 /*yield*/, database_1.client.connect()];
+            case 2:
+                conn = _a.sent();
+                sql = "DELETE FROM users WHERE email=$1";
+                _a.label = 3;
+            case 3: return [3 /*break*/, 5];
+            case 4: return [2 /*return*/, res.status(401).json("Token is not valid")];
+            case 5: return [2 /*return*/];
+        }
+    });
+}); });
 var signOut = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var _a, input;
     return __generator(this, function (_b) {
@@ -292,7 +322,7 @@ var confirmForgotPassword = (0, catchAsync_1.string)(function (req, res) { retur
 exports.confirmForgotPassword = confirmForgotPassword;
 var test = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
-        return [2 /*return*/, res.send(" testing is okay ")];
+        return [2 /*return*/, res.json(" testing is okay ")];
     });
 }); };
 exports.test = test;

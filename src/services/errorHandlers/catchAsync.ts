@@ -13,12 +13,24 @@ const used=(fn: { (req: express.Request< any, number|undefined>, res: express.Re
     }
 }
 
+const numberVoid=(fn: { (req: express.Request< any, number|undefined>, res: express.Response<number>, next: express.NextFunction): Promise<any|void>})=> {
+    return (req: Request, res: Response, next: NextFunction) => {
+        fn(req, res, next).catch(next);
+    }
+}
+
 const string=(fn: { (req: express.Request<any, string|undefined>, res: express.Response<string|undefined>, next: express.NextFunction): Promise<number|undefined>})=> {
     return (req: Request, res: Response, next: NextFunction) => {
         fn(req, res, next).catch(next);
     }
 }
-export { use, used,string }
+
+const image=(fn: { (req: express.Request<any, string|undefined>, res: express.Response<string|undefined>, next: express.NextFunction): Promise<void| number>})=> {
+    return (req: Request, res: Response, next: NextFunction) => {
+        fn(req, res, next).catch(next);
+    }
+}
+export { use, used,string, image,numberVoid }
 
 
 /*

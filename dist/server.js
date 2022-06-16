@@ -45,16 +45,18 @@ var body_parser_1 = __importDefault(require("body-parser"));
 //import cors from "cors";
 var database_1 = require("./services/database/database");
 var user_1 = require("./routes/user");
+var product_1 = require("./routes/product");
 // import now from "./utilities/func";
 var errors_1 = __importDefault(require("./services/errorHandlers/errors"));
 var errorController_1 = __importDefault(require("./middleware/errorController"));
 dotenv_1["default"].config();
-var PORT = process.env.PORT || 3000;
+var PORT = process.env.PORT || process.env.PORT2;
 var app = (0, express_1["default"])();
 app.use(body_parser_1["default"].json());
 app.use(express_1["default"].json());
 (0, user_1.user_routes)(app);
 (0, user_1.cognito_routes)(app);
+(0, product_1.cloudinary_routes)(app);
 app.get("/galleryone", function (req, res) {
     return __awaiter(this, void 0, void 0, function () {
         return __generator(this, function (_a) {

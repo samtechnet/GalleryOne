@@ -6,3 +6,5 @@ pls push code at intervals, when you work on something push and ensure commit me
 
 
 To generate random strings : node  require('crypto').randomBytes(64).toString('hex')
+
+to create table :  node_modules/db-migrate/bin/db-migrate create products --sql-file
