@@ -3,9 +3,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 exports.__esModule = true;
-var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 var client_cognito_identity_provider_1 = require("@aws-sdk/client-cognito-identity-provider");
 var errors_1 = __importDefault(require("../../services/errorHandlers/errors"));
+var jws_1 = __importDefault(require("jws"));
 var secret = String(process.env.TOKEN_SECRET);
 var token;
 var pool_region = 'us-east-1';
@@ -24,8 +24,25 @@ var verifyAuthToken = function (req, res, next) {
             res.writeHead(401).end();
         }
         else {
-            var decoded = jsonwebtoken_1["default"].decode(token_1);
-            // const {keys}=decoded
+            var decoded = jws_1["default"].decode(token_1);
+            console.log(decoded);
+            var kid = decoded.header.kid;
+            var payload = decoded.payload;
+            var signature = decoded.signature;
+            var pem = pems[kid];
+            console.log(payload);
+            if (typeof payload === "string") {
+                try {
+                    var obj = JSON.parse(payload);
+                    if (obj !== null && typeof obj === "object") {
+                        payload = obj;
+                    }
+                }
+                catch (error) {
+                    throw new errors_1["default"]("invalide token", 500);
+                }
+                var decoded1 = jws_1["default"].verify(token_1, pem, SecretKey);
+            }
             //const kid= decoded.payload;
             // const pem = pems[]
             // console.log(kid.username);

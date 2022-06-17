@@ -4,6 +4,7 @@ import { index, create, show, authenticate } from "../controller/user";
 //import AuthCognito from "../controller/Auth/cognito-service";
 import { signUp, confirmSignUp, signIn,forgotPassword,resendConfirmationCode,confirmForgotPassword, test } from "../services/cognito-services/cognito-services";
 import verifyAuthToken from "../controller/Auth/verifyAuthToken";
+import { handler } from "../controller/Auth/verify"
 
 
 
@@ -16,7 +17,7 @@ const user_routes = (app: express.Application) => {
         
 };
 const cognito_routes = (app: express.Application) => {
-    app.get("/tes", verifyAuthToken, test),
+    app.get("/tes", handler),
     app.post("/signIn", signIn),
     app.post("/signUp", signUp),
     app.post("/confirmSignUp", confirmSignUp),    

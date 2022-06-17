@@ -5,6 +5,7 @@ import fetch from "node-fetch";
 import { CognitoIdentityProviderClient, VerifySoftwareTokenCommand, AssociateSoftwareTokenCommand } from "@aws-sdk/client-cognito-identity-provider";
 import { use, used } from "../../services/errorHandlers/catchAsync";
 import AppError from "../../services/errorHandlers/errors";
+import jws from "jws";
 
 
 const secret = String(process.env.TOKEN_SECRET);
@@ -28,8 +29,26 @@ const verifyAuthToken = (req: Request, res: Response, next: NextFunction) => {
 
       res.writeHead(401).end();
     } else {
-      const decoded = Jwt.decode(token);
-      const keys=decoded
+      const decoded = jws.decode(token);
+      
+      console.log(decoded)
+      let kid:string = decoded.header.kid
+      let payload = decoded.payload
+      let signature = decoded.signature;
+      let pem = pems[kid]
+      console.log(payload)
+      if (typeof payload === "string") {
+        try {
+          let obj = JSON.parse(payload);
+          if (obj !== null && typeof obj === "object") {
+            payload = obj;
+          }
+        } catch (error) {
+          throw new AppError("invalide token", 500)
+        }
+        const decoded1 = jws.verify(token, pem, SecretKey );
+
+      }
       //const kid= decoded.payload;
      // const pem = pems[]
      // console.log(kid.username);
