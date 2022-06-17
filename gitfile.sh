@@ -4,7 +4,7 @@ git status
 echo "Next line on script"
 git add .
 echo "I'm adding all file here"
-git commit -m "Done: users models with aws cognito, authentication with aws cognito"
+git commit -m "Done: new push"
 echo "last line of script"
 git branch -m Dev
 git push -u origin Dev
