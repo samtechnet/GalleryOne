@@ -1,4 +1,4 @@
-import express, { application, NextFunction, Request, Response } from 'express';
+import  {  NextFunction, Request, Response } from 'express';
 import { AppError } from './ApiError';
 
 const errDev = (err: AppError, res: Response) => {

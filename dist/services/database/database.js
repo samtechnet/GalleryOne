@@ -56,8 +56,8 @@ if (ENV === "test") {
         password: POSTGRES_PASSWORD
     });
 }
-else {
-    //console.log("I am in dev mode");
+if (ENV === "prod") {
+    console.log("I am in Production mode");
     exports.client = client = new pg_1.Pool({
         host: POSTGRES_HOST,
         database: POSTGRES_DB,
@@ -65,6 +65,34 @@ else {
         password: POSTGRES_PASSWORD
     });
 }
+if (ENV === "dev") {
+    console.log("I am in dev mode");
+    exports.client = client = new pg_1.Pool({
+        host: POSTGRES_HOST,
+        database: POSTGRES_DB,
+        user: POSTGRES_USER,
+        password: POSTGRES_PASSWORD
+    });
+}
+if (ENV === "prod") {
+    console.log("I am in production mode");
+    exports.client = client = new pg_1.Pool({
+        connectionString: process.env.DATABASE_URL,
+        ssl: {
+            rejectUnauthorized: false
+        }
+    });
+}
+client.connect();
+client.query('SELECT table_schema,table_name FROM information_schema.tables;', function (err, res) {
+    if (err)
+        throw err;
+    for (var _i = 0, _a = res.rows; _i < _a.length; _i++) {
+        var row = _a[_i];
+        console.log(JSON.stringify(row));
+    }
+    client.end();
+});
 var dbConnection = function (sql) { return __awaiter(void 0, void 0, void 0, function () {
     var conn, res;
     return __generator(this, function (_a) {

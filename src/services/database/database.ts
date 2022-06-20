@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 import { Pool } from "pg";
 import { Product } from "../../models/product";
+import products from "../../Products/controllers/products";
 
 dotenv.config();
 
@@ -23,16 +24,45 @@ if (ENV === "test") {
     user: POSTGRES_USER,
     password: POSTGRES_PASSWORD,
   });
-} else {
-  //console.log("I am in dev mode");
+}
+
+if (ENV === "prod") {
+  console.log("I am in Production mode");
   client = new Pool({
     host: POSTGRES_HOST,
     database: POSTGRES_DB,
     user: POSTGRES_USER,
     password: POSTGRES_PASSWORD,
-  }); 
+  });
 }
 
+if (ENV === "dev") {
+  console.log("I am in dev mode");
+  client = new Pool({
+    host: POSTGRES_HOST,
+    database: POSTGRES_DB,
+    user: POSTGRES_USER,
+    password: POSTGRES_PASSWORD,
+  });
+}
+
+if (ENV === "prod") {
+  console.log("I am in production mode");
+    client = new Pool({
+        connectionString: process.env.DATABASE_URL,
+        ssl: {
+            rejectUnauthorized: false
+        }
+    });
+}
+client.connect();
+client.query('SELECT table_schema,table_name FROM information_schema.tables;', (err, res) => {
+    if (err) throw err;
+    for (let row of res.rows) {
+      console.log(JSON.stringify(row));
+    }
+    client.end();
+  });
 const dbConnection = async (sql: string):Promise<any> => {
   const conn = await client.connect();
   const res = await conn.query(sql);
@@ -60,4 +90,4 @@ const dbConnectionArrayOfValues = async (sql: string, []
     return res
   };
 
-export { client, dbConnection, dbConnectionWithId,dbConnectionArrayOfValues };
+  export { client, dbConnection, dbConnectionWithId, dbConnectionArrayOfValues };

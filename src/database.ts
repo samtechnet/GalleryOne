@@ -11,12 +11,13 @@ const {
     POSTGRES_DB, 
     POSTGRES_TEST_DB,
     POSTGRES_USER, 
-    POSTGRES_PASSWORD, 
+    POSTGRES_PASSWORD,
+    DATABASE_URL,
     NODE_ENV
 } = process.env;
 
 // create a connection to the database
-let client;
+let client: Pool;
 console.log('ENV', NODE_ENV);
 if (NODE_ENV === 'test' ) {
     client = new Pool({
@@ -35,5 +36,22 @@ if (NODE_ENV === 'dev') {
         password: POSTGRES_PASSWORD,
     });
 }
+
+if (NODE_ENV === 'prod') {
+    client = new Pool({
+        connectionString: process.env.DATABASE_URL,
+        ssl: {
+            rejectUnauthorized: false
+        }
+    });
+}
+client.connect();
+client.query('SELECT table_schema,table_name FROM information_schema.tables;', (err, res) => {
+    if (err) throw err;
+    for (let row of res.rows) {
+      console.log(JSON.stringify(row));
+    }
+    client.end();
+  });
 
   export default client;
