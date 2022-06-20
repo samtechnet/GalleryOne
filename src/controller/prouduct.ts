@@ -4,7 +4,6 @@ import AppError from '../services/errorHandlers/errors';
 import { use, used } from "../services/errorHandlers/catchAsync";
 import { upload ,cloud} from "../services/cloudinary/cloudinary"
 
-
 // create an instance of the class imported
 const products = new AllProducts();
 

@@ -1,7 +1,6 @@
 import dotenv from "dotenv";
 import { Pool } from "pg";
-import { Product } from "../../models/product";
-import products from "../../Products/controllers/products";
+
 
 dotenv.config();
 
