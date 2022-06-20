@@ -8,7 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node src/server",
     "build": "npx tsc",
-    "watch": "tsc-watch --esModuleInterop src/server.ts --outDir ./dist --onSuccess \"node ./dist/server.js\"",
+    "watch": "tsc-watch --esModuleInterop src/server.ts --outDir ./dist --onSuccess \"ts-node ./dist/server.js\"",
     "tsc": "tsc",
     "gitty": "bash gitfile.sh "
   },
