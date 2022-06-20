@@ -15,7 +15,7 @@ import swaggerDocumentation from "./controller/documentation";
 dotenv.config();
 
 
-const PORT = process.env.PORT || process.env.PORT2;
+const PORT = process.env.PORT  || 5000;
 
 const app: express.Application = express();
 app.use(bodyParser.json());

@@ -51,7 +51,7 @@ var errorController_1 = __importDefault(require("./middleware/errorController"))
 var swagger_ui_express_1 = __importDefault(require("swagger-ui-express"));
 var documentation_1 = __importDefault(require("./controller/documentation"));
 dotenv_1["default"].config();
-var PORT = process.env.PORT || process.env.PORT2;
+var PORT = process.env.PORT || 5000;
 var app = (0, express_1["default"])();
 app.use(body_parser_1["default"].json());
 app.use(express_1["default"].json());
