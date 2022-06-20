@@ -15,6 +15,7 @@ import swaggerDocumentation from "./controller/documentation";
 dotenv.config();
 
 
+
 const PORT = process.env.PORT || process.env.PORT2;
 
 const app: express.Application = express();
