@@ -4,8 +4,8 @@ git status
 echo "Next line on script"
 git add .
 echo "I'm adding all file here"
-git commit -m "Done: first deployment"
+git commit -m "products folder"
 echo "last line of script"
-git branch -m Dev
-git push -u origin Dev
+git branch -m data_sci
+git push -u origin data_sci
 echo "                         Done"
