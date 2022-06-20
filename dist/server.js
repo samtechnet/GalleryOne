@@ -42,7 +42,6 @@ exports.__esModule = true;
 var express_1 = __importDefault(require("express"));
 var dotenv_1 = __importDefault(require("dotenv"));
 var body_parser_1 = __importDefault(require("body-parser"));
-//import cors from "cors";
 var database_1 = require("./services/database/database");
 var user_1 = require("./routes/user");
 var product_1 = require("./routes/product");

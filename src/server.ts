@@ -1,7 +1,7 @@
-import express, { ErrorRequestHandler, NextFunction, Request, Response } from "express";
+import express, {  NextFunction, Request, Response } from "express";
 import dotenv from "dotenv";
 import bodyParser, { json } from "body-parser";
-//import cors from "cors";
+import cors from "cors";
 import { client, dbConnection } from "./services/database/database"
 import { user_routes, cognito_routes } from "./routes/user";
 import { cloudinary_routes } from "./routes/product";
