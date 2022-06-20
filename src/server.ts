@@ -8,7 +8,9 @@ import { cloudinary_routes } from "./routes/product";
 // import now from "./utilities/func";
 import AppError from "./services/errorHandlers/errors";
 import errorController from "./middleware/errorController";
-import { use, used }  from "./services/errorHandlers/catchAsync";
+import { use, used } from "./services/errorHandlers/catchAsync";
+import swaggerDoc from "swagger-ui-express";
+import swaggerDocumentation from "./controller/documentation";
 
 dotenv.config();
 
@@ -19,7 +21,8 @@ const PORT = process.env.PORT || process.env.PORT2;
 const app: express.Application = express();
 app.use(bodyParser.json());
 app.use(express.json());
-
+app.use("/documentations", swaggerDoc.serve);
+app.use("/documentations", swaggerDoc.setup(swaggerDocumentation));
 
 
 user_routes(app);
@@ -36,7 +39,7 @@ app.all('*', (req: Request, res: Response, next: NextFunction) => {
     throw new AppError(`Requested URL ${req.path} not found!`, 404);
     
 });
-app.use(errorController)
+app.use(errorController);
 
 
 

@@ -35,7 +35,7 @@ const verifyAuthToken = (req: Request, res: Response, next: NextFunction) => {
       let kid:string = decoded.header.kid
       let payload = decoded.payload
       let signature = decoded.signature;
-      let pem = pems[kid]
+     // let pem = pems[kid]
       console.log(payload)
       if (typeof payload === "string") {
         try {
@@ -46,7 +46,7 @@ const verifyAuthToken = (req: Request, res: Response, next: NextFunction) => {
         } catch (error) {
           throw new AppError("invalide token", 500)
         }
-        const decoded1 = jws.verify(token, pem, SecretKey );
+       // const decoded1 = jws.verify(token, pem, SecretKey );
 
       }
       //const kid= decoded.payload;

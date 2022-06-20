@@ -29,7 +29,7 @@ var verifyAuthToken = function (req, res, next) {
             var kid = decoded.header.kid;
             var payload = decoded.payload;
             var signature = decoded.signature;
-            var pem = pems[kid];
+            // let pem = pems[kid]
             console.log(payload);
             if (typeof payload === "string") {
                 try {
@@ -41,7 +41,7 @@ var verifyAuthToken = function (req, res, next) {
                 catch (error) {
                     throw new errors_1["default"]("invalide token", 500);
                 }
-                var decoded1 = jws_1["default"].verify(token_1, pem, SecretKey);
+                // const decoded1 = jws.verify(token, pem, SecretKey );
             }
             //const kid= decoded.payload;
             // const pem = pems[]
