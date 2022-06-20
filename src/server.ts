@@ -11,6 +11,7 @@ import errorController from "./middleware/errorController";
 import { use, used } from "./services/errorHandlers/catchAsync";
 import swaggerDoc from "swagger-ui-express";
 import swaggerDocumentation from "./controller/documentation";
+import { Result } from "express-validator";
 
 dotenv.config();
 
@@ -32,7 +33,19 @@ app.get("/galleryone", async function (req: Request, res: Response) {
     res.send("This is server");
    
     
-  });
+});
+  
+app.get("/db", async (req: Request, res: Response) => {
+    client.connect();
+    try {
+        const heroku = await client.query("SELECT SESSION_USER");
+        const result = { "result": (heroku) ? heroku.rows : null };
+        res.send(JSON.stringify(result));
+        client.end()
+    } catch (error) {
+        
+    }
+})
 
 app.all('*', (req: Request, res: Response, next: NextFunction) => {
     throw new AppError(`Requested URL ${req.path} not found!`, 404);
@@ -43,28 +56,28 @@ app.use(errorController);
 
 
  
-app.listen(PORT, () => {
-    console.log(`Server started successfulyy on PORT ${PORT}`);
+// app.listen(PORT, () => {
+//     console.log(`Server started successfulyy on PORT ${PORT}`);
    
-});
+// });
 
 export default app;
-// const runApp = async (): Promise<any>=> {
-//     try {
+const runApp = async (): Promise<any>=> {
+    try {
          
-//         const result = await dbConnection('SELECT SESSION_USER');
-//         if (result.rows) {
-//             const res = console.log(result.rows)
-//         }
-//         app.listen(PORT, () => {
-//             console.log(`Server started successfulyy on PORT ${PORT}`);
+        const result = await dbConnection('SELECT SESSION_USER');
+        if (result.rows) {
+            const res = console.log(result.rows)
+        }
+        app.listen(PORT, () => {
+            console.log(`Server started successfulyy on PORT ${PORT}`);
            
-//         });
+        });
         
-//     } catch (error) {
-//         console.log(error)
+    } catch (error) {
+        console.log(error)
       
-//     }
-// };
+    }
+};
 
-// runApp();
+runApp();

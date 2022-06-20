@@ -56,7 +56,7 @@ if (ENV === "test") {
         password: POSTGRES_PASSWORD
     });
 }
-if (ENV === "prod") {
+if (ENV === "prode") {
     console.log("I am in Production mode");
     exports.client = client = new pg_1.Pool({
         host: POSTGRES_HOST,
@@ -74,6 +74,7 @@ if (ENV === "dev") {
         password: POSTGRES_PASSWORD
     });
 }
+;
 if (ENV === "prod") {
     console.log("I am in production mode");
     exports.client = client = new pg_1.Pool({
@@ -83,6 +84,7 @@ if (ENV === "prod") {
         }
     });
 }
+;
 client.connect();
 client.query('SELECT table_schema,table_name FROM information_schema.tables;', function (err, res) {
     if (err)

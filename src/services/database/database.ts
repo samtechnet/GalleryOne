@@ -26,7 +26,7 @@ if (ENV === "test") {
   });
 }
 
-if (ENV === "prod") {
+if (ENV === "prode") {
   console.log("I am in Production mode");
   client = new Pool({
     host: POSTGRES_HOST,
@@ -44,7 +44,7 @@ if (ENV === "dev") {
     user: POSTGRES_USER,
     password: POSTGRES_PASSWORD,
   });
-}
+};
 
 if (ENV === "prod") {
   console.log("I am in production mode");
@@ -54,7 +54,7 @@ if (ENV === "prod") {
             rejectUnauthorized: false
         }
     });
-}
+};
 client.connect();
 client.query('SELECT table_schema,table_name FROM information_schema.tables;', (err, res) => {
     if (err) throw err;
