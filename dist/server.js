@@ -42,7 +42,6 @@ exports.__esModule = true;
 var express_1 = __importDefault(require("express"));
 var dotenv_1 = __importDefault(require("dotenv"));
 var body_parser_1 = __importDefault(require("body-parser"));
-var database_1 = require("./services/database/database");
 var user_1 = require("./routes/user");
 var product_1 = require("./routes/product");
 // import now from "./utilities/func";
@@ -72,28 +71,20 @@ app.all('*', function (req, res, next) {
     throw new errors_1["default"]("Requested URL ".concat(req.path, " not found!"), 404);
 });
 app.use(errorController_1["default"]);
-var runApp = function () { return __awaiter(void 0, void 0, void 0, function () {
-    var result, res, error_1;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, (0, database_1.dbConnection)('SELECT SESSION_USER')];
-            case 1:
-                result = _a.sent();
-                if (result.rows) {
-                    res = console.log(result.rows);
-                }
-                app.listen(PORT, function () {
-                    console.log("Server started successfulyy on PORT ".concat(PORT));
-                });
-                return [3 /*break*/, 3];
-            case 2:
-                error_1 = _a.sent();
-                console.log(error_1);
-                return [3 /*break*/, 3];
-            case 3: return [2 /*return*/];
-        }
-    });
-}); };
-runApp();
+app.listen(PORT, function () {
+    console.log("Server started successfulyy on PORT ".concat(PORT));
+});
+// const runApp = async (): Promise<any>=> {
+//     try {
+//         const result = await dbConnection('SELECT SESSION_USER');
+//         if (result.rows) {
+//             const res = console.log(result.rows)
+//         }
+//         app.listen(PORT, () => {
+//             console.log(`Server started successfulyy on PORT ${PORT}`);
+//         });
+//     } catch (error) {
+//         console.log(error)
+//     }
+// };
+// runApp();

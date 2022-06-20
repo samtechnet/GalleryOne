@@ -43,25 +43,28 @@ app.use(errorController);
 
 
  
+app.listen(PORT, () => {
+    console.log(`Server started successfulyy on PORT ${PORT}`);
+   
+});
 
 
-
-const runApp = async (): Promise<any>=> {
-    try {
+// const runApp = async (): Promise<any>=> {
+//     try {
          
-        const result = await dbConnection('SELECT SESSION_USER');
-        if (result.rows) {
-            const res = console.log(result.rows)
-        }
-        app.listen(PORT, () => {
-            console.log(`Server started successfulyy on PORT ${PORT}`);
+//         const result = await dbConnection('SELECT SESSION_USER');
+//         if (result.rows) {
+//             const res = console.log(result.rows)
+//         }
+//         app.listen(PORT, () => {
+//             console.log(`Server started successfulyy on PORT ${PORT}`);
            
-        });
+//         });
         
-    } catch (error) {
-        console.log(error)
+//     } catch (error) {
+//         console.log(error)
       
-    }
-};
+//     }
+// };
 
-runApp();
+// runApp();
