@@ -13,7 +13,7 @@ const swaggerDocumentation = {
         description: "Local Dev"
         },
         {
-            url: "http://localhost:5000",
+            url: "https://gallery-one.herokuapp.com/",
             description: "Production Dev"
         },
     ],
