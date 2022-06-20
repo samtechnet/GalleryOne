@@ -1,4 +1,4 @@
-import express, {  NextFunction, Request, Response } from "express";
+import express, {   Request, Response,NextFunction } from "express";
 import dotenv from "dotenv";
 import bodyParser, { json } from "body-parser";
 import cors from "cors";
@@ -48,7 +48,7 @@ app.listen(PORT, () => {
    
 });
 
-
+export default app;
 // const runApp = async (): Promise<any>=> {
 //     try {
          

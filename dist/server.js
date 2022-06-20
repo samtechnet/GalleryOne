@@ -74,6 +74,7 @@ app.use(errorController_1["default"]);
 app.listen(PORT, function () {
     console.log("Server started successfulyy on PORT ".concat(PORT));
 });
+exports["default"] = app;
 // const runApp = async (): Promise<any>=> {
 //     try {
 //         const result = await dbConnection('SELECT SESSION_USER');
