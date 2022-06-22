@@ -1,0 +1,24 @@
+{
+    "dev": {
+      "driver": "pg",
+      "host": "127.0.0.1",
+      "database": "galleryone",
+      "user": "samtech",
+      "password": "2010.sam"
+    },
+    "test": {
+      "driver": "pg",
+      "host": "127.0.0.1",
+      "database": "galleryone_dev_test",
+      "user": "samtech",
+      "password": "2010.sam"
+    },
+    "prod": {
+      "driver": "pg",
+      "host": "ec2-54-228-125-183.eu-west-1.compute.amazonaws.com",
+      "database": "dmloc3n1hv1e4",
+      "username": "iazvuxdworxufy",
+      "password": "24ffe9d1946e4b11b8ccca46213d3292ae92170365d9731e21ed7db70755ed03",
+      "DATABASE_URL": "postgres://iazvuxdworxufy:24ffe9d1946e4b11b8ccca46213d3292ae92170365d9731e21ed7db70755ed03@ec2-54-228-125-183.eu-west-1.compute.amazonaws.com:5432/dmloc3n1hv1e4"
+    }
+}
