@@ -46,7 +46,6 @@ app.get("/db", async (req: Request, res: Response) => {
 })
 
 
-
 app.all('*', (req: Request, res: Response, next: NextFunction) => {
     throw new AppError(`Requested URL ${req.path} not found!`, 404);
     
