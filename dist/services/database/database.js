@@ -43,7 +43,7 @@ exports.dbConnectionArrayOfValues = exports.dbConnectionWithId = exports.dbConne
 var dotenv_1 = __importDefault(require("dotenv"));
 var pg_1 = require("pg");
 dotenv_1["default"].config();
-var _a = process.env, POSTGRES_HOST = _a.POSTGRES_HOST, POSTGRES_DB = _a.POSTGRES_DB, POSTGRES_DB_TEST = _a.POSTGRES_DB_TEST, POSTGRES_USER = _a.POSTGRES_USER, POSTGRES_PASSWORD = _a.POSTGRES_PASSWORD, ENV = _a.ENV;
+var _a = process.env, POSTGRES_HOST = _a.POSTGRES_HOST, POSTGRES_DB = _a.POSTGRES_DB, POSTGRES_DB_TEST = _a.POSTGRES_DB_TEST, POSTGRES_USER = _a.POSTGRES_USER, POSTGRES_PASSWORD = _a.POSTGRES_PASSWORD, DATABASE_URL = _a.DATABASE_URL, ENV = _a.ENV;
 var client;
 exports.client = client;
 console.log("ENV", ENV);
@@ -52,15 +52,6 @@ if (ENV === "test") {
     exports.client = client = new pg_1.Pool({
         host: POSTGRES_HOST,
         database: POSTGRES_DB_TEST,
-        user: POSTGRES_USER,
-        password: POSTGRES_PASSWORD
-    });
-}
-if (ENV === "prode") {
-    console.log("I am in Production mode");
-    exports.client = client = new pg_1.Pool({
-        host: POSTGRES_HOST,
-        database: POSTGRES_DB,
         user: POSTGRES_USER,
         password: POSTGRES_PASSWORD
     });
@@ -83,18 +74,18 @@ if (ENV === "prod") {
             rejectUnauthorized: false
         }
     });
+    client.connect();
+    client.query('SELECT table_schema,table_name FROM information_schema.tables;', function (err, res) {
+        if (err)
+            throw err;
+        for (var _i = 0, _a = res.rows; _i < _a.length; _i++) {
+            var row = _a[_i];
+            console.log(JSON.stringify(row));
+        }
+        client.end();
+    });
 }
 ;
-client.connect();
-client.query('SELECT table_schema,table_name FROM information_schema.tables;', function (err, res) {
-    if (err)
-        throw err;
-    for (var _i = 0, _a = res.rows; _i < _a.length; _i++) {
-        var row = _a[_i];
-        console.log(JSON.stringify(row));
-    }
-    client.end();
-});
 var dbConnection = function (sql) { return __awaiter(void 0, void 0, void 0, function () {
     var conn, res;
     return __generator(this, function (_a) {

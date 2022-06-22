@@ -9,5 +9,3 @@ CREATE TABLE users(
     NIN_number int,
     date_of_birth DATE 
 )
-ALTER TABLE users
-ALTER COLUMN date_of_birth DATE
