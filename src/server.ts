@@ -41,11 +41,9 @@ app.get("/db", async (req: Request, res: Response) => {
         const result = { "result": (heroku) ? heroku.rows : null };
         res.send(JSON.stringify(result));
         client.end()
-    } catch (error) {  
+    } catch (error) {
     }
-})
-
-
+});
 app.all('*', (req: Request, res: Response, next: NextFunction) => {
     throw new AppError(`Requested URL ${req.path} not found!`, 404);
     
