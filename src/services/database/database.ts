@@ -26,8 +26,6 @@ if (ENV === "test") {
   });
 }
 
-
-
 if (ENV === "dev") {
   console.log("I am in dev mode");
   client = new Pool({
