@@ -22,8 +22,9 @@ const sendErrorProd = (err: AppError, res: Response,) => {
             name: err.name,
             operation: err.isOperational,
             
-        }) 
+        })
         console.log(err)
+    }    
     // } else {
     //     res.status(statusCode).json({
     //         success: false,
