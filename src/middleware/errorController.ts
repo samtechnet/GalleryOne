@@ -18,8 +18,12 @@ const sendErrorProd = (err: AppError, res: Response,) => {
         res.status(statusCode).json({
             success: false,
             message: err.message,
-        stack: err.stack,
+            stack: err.stack,
+            name: err.name,
+            operation: err.isOperational,
+            
         }) 
+        console.log(err)
     } else {
         res.status(statusCode).json({
             success: false,
