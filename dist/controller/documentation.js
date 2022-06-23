@@ -34,7 +34,11 @@ var swaggerDocumentation = {
             name: "User",
             description: "User routes"
         },
+        {
+            name: "Server",
+            description: "Server routes"
+        },
     ],
-    paths: __assign({}, user_1.userRouteDoc)
+    paths: __assign(__assign({}, user_1.userRouteDoc), user_1.serverRouteDoc)
 };
 exports["default"] = swaggerDocumentation;

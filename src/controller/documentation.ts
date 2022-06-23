@@ -1,4 +1,4 @@
-import { userRouteDoc } from "../routes/user";
+import { userRouteDoc, serverRouteDoc } from "../routes/user";
 
 const swaggerDocumentation = {
     openapi: "3.0.0",
@@ -22,9 +22,14 @@ const swaggerDocumentation = {
             name: "User",
             description: "User routes"
         },
+        {
+            name: "Server",
+            description: "Server routes"
+        },
     ],
     paths: {
         ...userRouteDoc,
+        ...serverRouteDoc
     }
 }
 

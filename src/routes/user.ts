@@ -2,7 +2,7 @@ import express from "express";
 import { index, create, show, authenticate } from "../controller/user";
 //import CognitoService from "../services/cognito-services/cognito-services";
 //import AuthCognito from "../controller/Auth/cognito-service";
-import { signUp, confirmSignUp, signIn,forgotPassword,resendConfirmationCode,confirmForgotPassword, test } from "../services/cognito-services/cognito-services";
+import { signUp, confirmSignUp, signIn,forgotPassword,resendConfirmationCode,confirmForgotPassword, } from "../services/cognito-services/cognito-services";
 import verifyAuthToken from "../controller/Auth/verifyAuthToken";
 import { handler } from "../controller/Auth/verify"
 
@@ -26,6 +26,9 @@ const cognito_routes = (app: express.Application) => {
     app.post("/confirmForgotPassword", confirmForgotPassword)
 }
 
+const test = [
+
+]
 const user = [
     {
         "success": true,
@@ -195,6 +198,25 @@ const user = [
         }
     },
 ]
+
+const server = {
+    
+        tags: ["server"],
+        description: "test and get a response from server",
+        responses: {
+            200: {
+                description: "Ok",
+                content: {
+                    "application/json": {
+                        schema: {
+                            type: "object",
+                            example: user[0]
+                        }
+                    }
+                }
+            }
+        }
+}
 const listUsers = 
     {
         tags: ["User"],
@@ -352,7 +374,7 @@ const userRouteDoc = {
     "/users": {
         get: listUsers,
     },
-    "/signup": {
+    "/signUp": {
         post: createUser,
     },
     "/signIn": {
@@ -371,8 +393,12 @@ const userRouteDoc = {
         post: createUser,
     },
 }
+const serverRouteDoc = {
+    "/galleryone": {
+        get: server
+    }
+}
 
 
-
-export {user_routes,cognito_routes, userRouteDoc} ;
+export {user_routes,cognito_routes, userRouteDoc,serverRouteDoc} ;
 

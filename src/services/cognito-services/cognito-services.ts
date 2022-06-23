@@ -127,7 +127,6 @@ const signIn = used(async (req: Request, res: Response) => {
         ClientId: clientId,
        
     }
-    
     const command = new InitiateAuthCommand(input);
     const response = await clients.send(command);
     if (response) {

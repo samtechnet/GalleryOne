@@ -1,6 +1,6 @@
 "use strict";
 exports.__esModule = true;
-exports.userRouteDoc = exports.cognito_routes = exports.user_routes = void 0;
+exports.serverRouteDoc = exports.userRouteDoc = exports.cognito_routes = exports.user_routes = void 0;
 var user_1 = require("../controller/user");
 //import CognitoService from "../services/cognito-services/cognito-services";
 //import AuthCognito from "../controller/Auth/cognito-service";
@@ -24,6 +24,7 @@ var cognito_routes = function (app) {
     app.post("/confirmForgotPassword", cognito_services_1.confirmForgotPassword);
 };
 exports.cognito_routes = cognito_routes;
+var test = [];
 var user = [
     {
         "success": true,
@@ -188,6 +189,23 @@ var user = [
         }
     },
 ];
+var server = {
+    tags: ["server"],
+    description: "test and get a response from server",
+    responses: {
+        200: {
+            description: "Ok",
+            content: {
+                "application/json": {
+                    schema: {
+                        type: "object",
+                        example: user[0]
+                    }
+                }
+            }
+        }
+    }
+};
 var listUsers = {
     tags: ["User"],
     description: "List all of the users",
@@ -338,7 +356,7 @@ var userRouteDoc = {
     "/users": {
         get: listUsers
     },
-    "/signup": {
+    "/signUp": {
         post: createUser
     },
     "/signIn": {
@@ -358,3 +376,9 @@ var userRouteDoc = {
     }
 };
 exports.userRouteDoc = userRouteDoc;
+var serverRouteDoc = {
+    "/galleryone": {
+        get: server
+    }
+};
+exports.serverRouteDoc = serverRouteDoc;
