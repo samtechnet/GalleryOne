@@ -34,7 +34,7 @@ const sendErrorProd = (err: AppError, res: Response,) => {
 }
 
 const errorController = (err: AppError,req: Request, res: Response, next: NextFunction) => {
-    if (process.env.NODE_ENV === "dev") {
+    if (process.env.ENV === "dev") {
         sendErrorDev(err, res);
     } else {
         sendErrorProd(err, res);
