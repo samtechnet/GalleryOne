@@ -145,9 +145,64 @@ var createUser = {
         }
     }
 };
+var signInUser = {
+    tags: ["User"],
+    description: "sign in a user",
+    requestBody: {
+        content: {
+            "application/json": {
+                schema: {
+                    type: "object",
+                    properties: {
+                        email: {
+                            type: "string",
+                            description: "Email of the user",
+                            example: "samlaja1292@gmail.com"
+                        },
+                        password: {
+                            type: "string",
+                            description: "A unique password of the user with a combination of capital letter, small letter, numbers and signs",
+                            example: "Password123@."
+                        }
+                    }
+                }
+            }
+        }
+    },
+    responses: {
+        200: {
+            description: "Ok",
+            content: {
+                "application/json": {
+                    schema: {
+                        type: "object",
+                        example: user[1]
+                    }
+                }
+            }
+        }
+    }
+};
 var userRouteDoc = {
     "/users": {
-        get: listUsers,
+        get: listUsers
+    },
+    "/signup": {
+        post: createUser
+    },
+    "/signIn": {
+        post: signInUser
+    },
+    "/confirmSignUp": {
+        post: createUser
+    },
+    "/forgotPassword": {
+        post: createUser
+    },
+    "/resendConfirmationCode": {
+        post: createUser
+    },
+    "/confirmForgotPassword": {
         post: createUser
     }
 };
