@@ -114,11 +114,12 @@ var signUp = (0, catchAsync_1.use)(function (req, res) { return __awaiter(void 0
 }); });
 exports.signUp = signUp;
 var confirmSignUp = (0, catchAsync_1.used)(function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, email, ConfirmCode, input, command, response;
+    var _a, email, ConfirmCode, username, input, command, response;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
                 _a = req.body, email = _a.email, ConfirmCode = _a.ConfirmCode;
+                username = email;
                 input = {
                     Username: email,
                     ConfirmationCode: ConfirmCode,

@@ -31,16 +31,120 @@ const user = [
         "success": true,
         "data": [
             {
-                "id": 1,
-                "first_name": "samuel",
-                "last_name": "omolaja",
-                "email": "samlaja1292@gmail.com",
-                "password_digest": "password123",
-                "phone_number": "8161228946",
-                "home_address": "Agege",
-                "nin_number": 123456,
-                "date_of_birth": "1992-12-01T23:00:00.000Z"
-            },
+                "success": true,
+                "data": [
+                  {
+                    "id": 1,
+                    "first_name": "samuel",
+                    "last_name": "omolaja",
+                    "email": "samlaja1292@gmail.com",
+                    "password_digest": "password123",
+                    "phone_number": "8161228946",
+                    "home_address": "Agege",
+                    "nin_number": 123456,
+                    "date_of_birth": "1992-12-01T23:00:00.000Z"
+                  },
+                  {
+                    "id": 3,
+                    "first_name": "samuel",
+                    "last_name": "omolaja",
+                    "email": "samlaja129@gmail.com",
+                    "password_digest": "password123",
+                    "phone_number": "8161228949",
+                    "home_address": "Agege",
+                    "nin_number": 123456,
+                    "date_of_birth": "1992-12-01T23:00:00.000Z"
+                  },
+                  {
+                    "id": 4,
+                    "first_name": "samuel",
+                    "last_name": "omolaja",
+                    "email": "samlaja12@gmail.com",
+                    "password_digest": "password123",
+                    "phone_number": "8161228947",
+                    "home_address": "Agege",
+                    "nin_number": null,
+                    "date_of_birth": "1992-12-01T23:00:00.000Z"
+                  },
+                  {
+                    "id": 5,
+                    "first_name": "samuel",
+                    "last_name": "omolaja",
+                    "email": "samlaja12924@gmail.com",
+                    "password_digest": "$2a$04$asNd8w5SMkd5uho1B2NZReOSDgZz7VU0VfuTiQYq70.BZLcYeQGui",
+                    "phone_number": "8161228941",
+                    "home_address": "agege",
+                    "nin_number": null,
+                    "date_of_birth": "1992-12-01T23:00:00.000Z"
+                  },
+                  {
+                    "id": 6,
+                    "first_name": "samuel",
+                    "last_name": "omolaja",
+                    "email": "samlajo12924@gmail.com",
+                    "password_digest": "$2a$04$sJEhFrTHariP6uyJ7vPGyueEbu2jIp7VKMapBMWBaczmWJ7yp9sSC",
+                    "phone_number": "8161227941",
+                    "home_address": "agege",
+                    "nin_number": null,
+                    "date_of_birth": "1992-12-01T23:00:00.000Z"
+                  },
+                  {
+                    "id": 10,
+                    "first_name": "yacojo6491@oceore.com",
+                    "last_name": "Samuel",
+                    "email": "Omolaje",
+                    "password_digest": "$2b$04$qN.1j/7hwFf2a4QlH37SmOID3Zw2SaWXMiEF20epLRjSyR23RPCha",
+                    "phone_number": "2348161228946",
+                    "home_address": null,
+                    "nin_number": null,
+                    "date_of_birth": null
+                  },
+                  {
+                    "id": 12,
+                    "first_name": "Adekeye",
+                    "last_name": "Timothy",
+                    "email": "adekeyetimothy290@gmail.com",
+                    "password_digest": "$2b$04$8yObvuFyY.AhaKYopGND7uDOSwKYlUhNVWu3vYcpzvaJWkHxSXdiW",
+                    "phone_number": "2348179911517",
+                    "home_address": null,
+                    "nin_number": null,
+                    "date_of_birth": null
+                  },
+                  {
+                    "id": 15,
+                    "first_name": "Adekey",
+                    "last_name": "Timothy",
+                    "email": "adekeyetimothy9@gmail.com",
+                    "password_digest": "$2b$04$tf.a/H88IRIEOdJj9g69POns/LxsGSXtA5imWk2uTTGqs797CvgDS",
+                    "phone_number": "2348179911518",
+                    "home_address": null,
+                    "nin_number": null,
+                    "date_of_birth": null
+                  },
+                  {
+                    "id": 17,
+                    "first_name": "Adekey",
+                    "last_name": "Timothy",
+                    "email": "gimigit204@runqx.com",
+                    "password_digest": "$2b$04$65uP1dcAWauI5mXfOLZdwuv.rUDiLAs8FqfwxIEFirkvjZdsMMYoG",
+                    "phone_number": "2348179911535",
+                    "home_address": null,
+                    "nin_number": null,
+                    "date_of_birth": null
+                  },
+                  {
+                    "id": 18,
+                    "first_name": "Samuel",
+                    "last_name": "Omolaja",
+                    "email": "namacab552@mahazai.com",
+                    "password_digest": "$2b$04$vubCFgX5i2ko0KiMj1wiTeMhQ.llwbXv2PTMGvBCw6sHSQrsyTG6e",
+                    "phone_number": "2348161228976",
+                    "home_address": null,
+                    "nin_number": null,
+                    "date_of_birth": null
+                  }
+                ]
+              },
         
         ]
     },
@@ -78,6 +182,18 @@ const user = [
 
     
     },
+    {
+        "success": true,
+        "message": "Hurray! your email is valid and you are now a registered user",
+        "data": {
+          "$metadata": {
+            "httpStatusCode": 200,
+            "requestId": "9cbf1893-fef6-43a9-924e-fefb58ff42f8",
+            "attempts": 1,
+            "totalRetryDelay": 0
+          }
+        }
+    },
 ]
 const listUsers = 
     {
@@ -90,10 +206,7 @@ const listUsers =
                     "application/json": {
                         schema: {
                             type: "object",
-                            example: {
-                                count: 1,
-                                user
-                            },
+                            example: user[0]
                         }
                     }
                 }
@@ -113,7 +226,7 @@ const createUser = {
                         email: {
                             type: "string",
                             description: "Email of the user",
-                            example: "samlaja1292@gmail.com"
+                            example: "namacab552@mahazai.com"
                         },
                         first_name: {
                             type: "string",
@@ -128,7 +241,7 @@ const createUser = {
                         phone_number: {
                             type: "string",
                             description: "mobile phone number of the user",
-                            example: "+2348161228946"
+                            example: "+2348161228976"
                         },
                         password: {
                             type: "string",
@@ -154,6 +267,46 @@ const createUser = {
         }
     }
 }
+
+const confirmSignUpCode = {
+    tags: ["User"],
+    description: "User need to confirm the validity of their email before they can sign in",
+    requestBody: {
+        content: {
+            "application/json": {
+                schema: {
+                    type: "object",
+                    properties: {
+                        email: {
+                            type: "string",
+                            description: "Email of the user",
+                            example: "samlaja1292@gmail.com"
+                        },
+                        ConfirmCode: {
+                            type: "string",
+                            description: "A timed based 6 digit code sent to user provided email during sign up",
+                            example: "687789"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    responses: {
+        200: {
+            description: "Ok",
+            content: {
+                "application/json": {
+                    schema: {
+                        type: "object",
+                        example: user[2],
+                    }
+                }
+            }
+        }
+    }
+}
+
 
 
 const signInUser = {
@@ -206,7 +359,7 @@ const userRouteDoc = {
         post: signInUser,
     },
     "/confirmSignUp": {
-        post: createUser,
+        post: confirmSignUpCode,
     },
     "/forgotPassword": {
         post: createUser,

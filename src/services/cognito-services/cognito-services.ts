@@ -68,6 +68,7 @@ const params = {
 
 const confirmSignUp = used(async (req: Request, res: Response) => {
     const { email, ConfirmCode } = req.body;
+    const username =email
     const input = {
         Username: email,
         ConfirmationCode: ConfirmCode,
