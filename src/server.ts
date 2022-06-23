@@ -7,7 +7,7 @@ import { user_routes, cognito_routes } from "./routes/user";
 import { cloudinary_routes } from "./routes/product";
 // import now from "./utilities/func";
 import AppError from "./services/errorHandlers/errors";
-import errorController from "./middleware/errorController";
+import {errorController} from "./middleware/errorController";
 import { use, used } from "./services/errorHandlers/catchAsync";
 import swaggerDoc from "swagger-ui-express";
 import swaggerDocumentation from "./controller/documentation";

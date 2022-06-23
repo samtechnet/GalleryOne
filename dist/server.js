@@ -48,7 +48,7 @@ var user_1 = require("./routes/user");
 var product_1 = require("./routes/product");
 // import now from "./utilities/func";
 var errors_1 = __importDefault(require("./services/errorHandlers/errors"));
-var errorController_1 = __importDefault(require("./middleware/errorController"));
+var errorController_1 = require("./middleware/errorController");
 var swagger_ui_express_1 = __importDefault(require("swagger-ui-express"));
 var documentation_1 = __importDefault(require("./controller/documentation"));
 dotenv_1["default"].config();
@@ -102,7 +102,7 @@ app.get("/db", function (req, res) { return __awaiter(void 0, void 0, void 0, fu
 app.all('*', function (req, res, next) {
     throw new errors_1["default"]("Requested URL ".concat(req.path, " not found!"), 404);
 });
-app.use(errorController_1["default"]);
+app.use(errorController_1.errorController);
 // app.listen(PORT, () => {
 //     console.log(`Server started successfulyy on PORT ${PORT}`);
 // });
