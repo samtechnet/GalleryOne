@@ -24,12 +24,12 @@ const sendErrorProd = (err: AppError, res: Response,) => {
             
         }) 
         console.log(err)
-    } else {
-        res.status(statusCode).json({
-            success: false,
-            message:"Something went wrong, please contact Admin",
-        })
-    }
+    // } else {
+    //     res.status(statusCode).json({
+    //         success: false,
+    //         message:"Something went wrong, please contact Admin",
+    //     })
+    // }
   
 }
 
