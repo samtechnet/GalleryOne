@@ -19,7 +19,8 @@ var sendErrorProd = function (err, res) {
     if (err.isOperational) {
         res.status(statusCode).json({
             success: false,
-            message: err.stack
+            message: err.message,
+            stack: err.stack
         });
     }
     else {

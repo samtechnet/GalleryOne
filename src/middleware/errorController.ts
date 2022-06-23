@@ -17,7 +17,8 @@ const sendErrorProd = (err: AppError, res: Response,) => {
     if (err.isOperational) {
         res.status(statusCode).json({
             success: false,
-            message: err.stack,
+            message: err.message,
+        stack: err.stack,
         }) 
     } else {
         res.status(statusCode).json({

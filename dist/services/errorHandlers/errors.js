@@ -20,7 +20,7 @@ var AppError = /** @class */ (function (_super) {
     function AppError(message, statusCode) {
         var _this = _super.call(this, message) || this;
         _this.statusCode = statusCode;
-        _this.isOperational = true;
+        _this.isOperational = false;
         Error.captureStackTrace(_this, _this.constructor);
         return _this;
     }
