@@ -37,7 +37,8 @@ var errorController = function (err, req, res, next) {
     if (process.env.ENV === "dev") {
         sendErrorDev(err, res);
     }
-    else {
+    ;
+    if (process.env.ENV === "prod") {
         sendErrorProd(err, res);
     }
 };
