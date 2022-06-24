@@ -79,7 +79,6 @@ if (ENV === "prod") {
             var row = _a[_i];
             console.log(JSON.stringify(row));
         }
-        client.end();
     });
 }
 ;

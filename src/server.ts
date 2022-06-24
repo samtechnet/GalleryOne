@@ -48,7 +48,7 @@ app.get("/db", async (req: Request, res: Response) => {
         const heroku = await client.query("SELECT SESSION_USER");
         const result = { "result": (heroku) ? heroku.rows : null };
         res.send(JSON.stringify(result));
-        
+    
     } catch (error) {
         throw new AppError("Unable to fetch session user", 404)
     }
