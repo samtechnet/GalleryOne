@@ -12,6 +12,11 @@ const {
   POSTGRES_PASSWORD,
   DATABASE_URL,
   ENV,
+  DATABASE,
+  PORT,
+  USERNAME,
+  PASSWORD,
+  HOST,
 } = process.env;
 
 let client: Pool;
@@ -38,8 +43,13 @@ if (ENV === "dev") {
 
 if (ENV === "prod") {
   console.log("I am in production mode");
+ 
     client = new Pool({
-        connectionString: process.env.DATABASE_URL
+      host: HOST,
+      database: DATABASE,
+      user: USERNAME,
+      password: PASSWORD,
+      port :Number(PORT),
     });
   
     client.connect();

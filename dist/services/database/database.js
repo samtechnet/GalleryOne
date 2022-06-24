@@ -43,7 +43,7 @@ exports.dbConnectionArrayOfValues = exports.dbConnectionWithId = exports.dbConne
 var dotenv_1 = __importDefault(require("dotenv"));
 var pg_1 = require("pg");
 dotenv_1["default"].config();
-var _a = process.env, POSTGRES_HOST = _a.POSTGRES_HOST, POSTGRES_DB = _a.POSTGRES_DB, POSTGRES_DB_TEST = _a.POSTGRES_DB_TEST, POSTGRES_USER = _a.POSTGRES_USER, POSTGRES_PASSWORD = _a.POSTGRES_PASSWORD, DATABASE_URL = _a.DATABASE_URL, ENV = _a.ENV;
+var _a = process.env, POSTGRES_HOST = _a.POSTGRES_HOST, POSTGRES_DB = _a.POSTGRES_DB, POSTGRES_DB_TEST = _a.POSTGRES_DB_TEST, POSTGRES_USER = _a.POSTGRES_USER, POSTGRES_PASSWORD = _a.POSTGRES_PASSWORD, DATABASE_URL = _a.DATABASE_URL, ENV = _a.ENV, DATABASE = _a.DATABASE, PORT = _a.PORT, USERNAME = _a.USERNAME, PASSWORD = _a.PASSWORD, HOST = _a.HOST;
 var client;
 exports.client = client;
 console.log("ENV", ENV);
@@ -69,7 +69,11 @@ if (ENV === "dev") {
 if (ENV === "prod") {
     console.log("I am in production mode");
     exports.client = client = new pg_1.Pool({
-        connectionString: process.env.DATABASE_URL
+        host: HOST,
+        database: DATABASE,
+        user: USERNAME,
+        password: PASSWORD,
+        port: Number(PORT)
     });
     client.connect();
     client.query('SELECT table_schema,table_name FROM information_schema.tables;', function (err, res) {
