@@ -20,14 +20,15 @@ const PORT = process.env.PORT  || 5000;
 
 const app: express.Application = express();
 app.use(bodyParser.json());
-app.use(cors({
-    'origin': "*",
-    'methods': ["GET", "PUT", "POST", "DELETE","PATCH"],
-    'allowedHeaders': ['Content-Type', 'Authorization'],
-    'optionsSuccessStatus': 204,
-    'preflightContinue': false
-}  
-));
+// app.use(cors({
+//     'origin': "*",
+//     'methods': ["GET", "PUT", "POST", "DELETE","PATCH"],
+//     'allowedHeaders': ['Content-Type', 'Authorization'],
+//     'optionsSuccessStatus': 204,
+//     'preflightContinue': false
+// }
+// ));
+app.use(cors());
 app.use(express.json());
 app.use("/documentations", swaggerDoc.serve);
 app.use("/documentations", swaggerDoc.setup(swaggerDocumentation));

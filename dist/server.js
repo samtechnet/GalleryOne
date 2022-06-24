@@ -55,13 +55,15 @@ dotenv_1["default"].config();
 var PORT = process.env.PORT || 5000;
 var app = (0, express_1["default"])();
 app.use(body_parser_1["default"].json());
-app.use((0, cors_1["default"])({
-    'origin': "*",
-    'methods': ["GET", "PUT", "POST", "DELETE", "PATCH"],
-    'allowedHeaders': ['Content-Type', 'Authorization'],
-    'optionsSuccessStatus': 204,
-    'preflightContinue': false
-}));
+// app.use(cors({
+//     'origin': "*",
+//     'methods': ["GET", "PUT", "POST", "DELETE","PATCH"],
+//     'allowedHeaders': ['Content-Type', 'Authorization'],
+//     'optionsSuccessStatus': 204,
+//     'preflightContinue': false
+// }
+// ));
+app.use((0, cors_1["default"])());
 app.use(express_1["default"].json());
 app.use("/documentations", swagger_ui_express_1["default"].serve);
 app.use("/documentations", swagger_ui_express_1["default"].setup(documentation_1["default"]));
