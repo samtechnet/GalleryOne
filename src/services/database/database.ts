@@ -43,15 +43,14 @@ if (ENV === "dev") {
 
 if (ENV === "prod") {
   console.log("I am in production mode");
- 
+
     client = new Pool({
       host: HOST,
       database: DATABASE,
       user: USERNAME,
-      password: PASSWORD,
+      password:String(PASSWORD),
       port :Number(PORT),
     });
-  
     client.connect();
     client.query('SELECT table_schema,table_name FROM information_schema.tables;', (err, res) => {
         if (err) throw err;

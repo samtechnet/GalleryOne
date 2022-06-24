@@ -72,7 +72,7 @@ if (ENV === "prod") {
         host: HOST,
         database: DATABASE,
         user: USERNAME,
-        password: PASSWORD,
+        password: String(PASSWORD),
         port: Number(PORT)
     });
     client.connect();
