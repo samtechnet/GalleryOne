@@ -39,11 +39,9 @@ if (ENV === "dev") {
 if (ENV === "prod") {
   console.log("I am in production mode");
     client = new Pool({
-        connectionString: process.env.DATABASE_URL,
-        ssl: {
-            rejectUnauthorized: false
-        }
+        connectionString: process.env.DATABASE_URL
     });
+  
     client.connect();
     client.query('SELECT table_schema,table_name FROM information_schema.tables;', (err, res) => {
         if (err) throw err;

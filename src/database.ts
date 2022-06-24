@@ -13,7 +13,8 @@ const {
     POSTGRES_USER, 
     POSTGRES_PASSWORD,
     DATABASE_URL,
-    NODE_ENV
+    NODE_ENV,
+    ENV,
 } = process.env;
 
 // create a connection to the database
@@ -37,7 +38,7 @@ if (NODE_ENV === 'dev') {
     });
 }
 
-if (NODE_ENV === 'prod') {
+if (ENV === 'prod') {
     client = new Pool({
         connectionString: process.env.DATABASE_URL,
         ssl: {
