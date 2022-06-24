@@ -92,11 +92,10 @@ app.get("/db", function (req, res) { return __awaiter(void 0, void 0, void 0, fu
                 heroku = _a.sent();
                 result = { "result": (heroku) ? heroku.rows : null };
                 res.send(JSON.stringify(result));
-                database_1.client.end();
                 return [3 /*break*/, 4];
             case 3:
                 error_1 = _a.sent();
-                return [3 /*break*/, 4];
+                throw new errors_1["default"]("Unable to fetch session user", 404);
             case 4: return [2 /*return*/];
         }
     });
