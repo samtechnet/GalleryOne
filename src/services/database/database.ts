@@ -51,16 +51,16 @@ if (ENV === "prod") {
       password:String(PASSWORD),
       port :Number(PORT),
     });
+
     client.connect();
     client.query('SELECT table_schema,table_name FROM information_schema.tables;', (err, res) => {
         if (err) throw err;
         for (let row of res.rows) {
           console.log(JSON.stringify(row));
         }
-        
+      
       });
 };
-
 const dbConnection = async (sql: string):Promise<any> => {
   const conn = await client.connect();
   const res = await conn.query(sql);
